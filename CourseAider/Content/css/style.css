@@ -5,6 +5,10 @@
 section{
     padding:10px 0px 10px 0px;
 }
+h1,h2,h3,h4,h5,h6,p{
+    margin:5px 0px 5px 0px;
+    padding:5px 0px 5px 0px;
+}
 h1{
     font-size:1.5em;
 }
@@ -29,11 +33,39 @@ h3{
     color:#b10d0d;
 }
 
+input[type="submit"]
+{
+    background:#b10d0d;
+    color:white;
+}
+
+figure.ca-testimonial{
+    margin-top:60px;
+    font-size:1.5em;
+    font-style:italic;
+    font-family:"Goudy Old Style";
+    color:#88cc88;
+    text-shadow:1px 1px 0px #b10d0d;
+}
+figure.ca-testimonial img{
+    box-shadow:3px 3px 5px #b10d0d;
+    border:1px solid black;
+    margin-left:50px;
+    margin-right:5px;
+    float:left;
+    width:80px;
+    height:80px;
+    border-radius:150px;
+}
+figure.ca-testimonial span{
+    font-weight:bold;
+}
 .ca-courses img{
     vertical-align: middle;
     width:100%;
     height:80px;
 }
+
 .ca-title-holder{
     position:absolute;
     width:90%;

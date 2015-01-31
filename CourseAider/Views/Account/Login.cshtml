@@ -1,0 +1,106 @@
+﻿@model CourseAider.Models.LoginModel
+
+@{
+    ViewBag.Title = "Log in";
+}
+
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <h1>@ViewBag.Title</h1>
+            }
+        }
+    }
+</section>
+
+<section class="ca-bg2 text-center">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(5))
+            {
+                <p>
+                    Please never give your password to anyone, we do not carry any
+                    responsibility for stolen data, please chech our <a>Terms and Conditions</a> and <a>Privacy Policy</a>.
+                </p>
+            }
+        }
+    }
+</section>
+
+<section id="loginForm" class="ca-bg1 text-center">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(6))
+            {
+                using (Html.BeginForm(new { ReturnUrl = ViewBag.ReturnUrl })) {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName)
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password)
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Password)
+                    </div>
+        
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RememberMe, new { @style="display:inline" })
+                        @Html.CheckBoxFor(m => m.RememberMe, new { @style = "margin-left:5px" })
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="submit" value="Log in" class="form-control"/>
+                    </div>
+                }
+            }
+            using (Html.BeginColumn(6))
+            {
+                <figure class="ca-testimonial">
+                    <img src="~/Content/images/teacher.png">
+                    <p>
+                        CourseAider is the best thing that has happened to my classes, I increased the
+                        prodocivity of my students by almost 150%.
+                    </p>
+                    <span>Dorothy Lambert - Teacher</span>
+                </figure>
+            }
+        }
+    }
+</section>
+    
+<section class="ca-bg4 text-center">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+              <p>
+                @Html.ActionLink("Register", "Register") if you don't have an account.
+              </p>
+            }
+        }
+    }
+</section>
+                        
+@*
+    TODO??: Enable external login?
+    <section class="social" id="socialLoginForm">
+        <h2>Use another service to log in.</h2>
+        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+    </section>
+*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

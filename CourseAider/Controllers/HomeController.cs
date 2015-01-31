@@ -8,13 +8,11 @@ namespace CourseAider.Controllers
 {
     public class HomeController : Controller
     {
-        //
-        // GET: /Home/
-
         public ActionResult Index()
         {
+            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
+
             return View();
         }
-
     }
 }

@@ -1,7 +1,5 @@
 ﻿@{
-    Layout = "~/Views/_DefaultLayout.cshtml";
     ViewBag.Title = "Index";
-    
 }
 
 <section class="ca-bg1">
@@ -12,11 +10,11 @@
             using (Html.BeginColumn(5))
             {
                 <h1>CourseAider - Advancing togheter against ignorance</h1>
-                <text>
+                <p>
                     CourseAider is an interactive system aimed at students and teachers,
                     which eases education and group work by bringing toghether the students
                     and the teachers in collective discussions.
-                </text>
+                </p>
             }
             using (Html.BeginColumn(7))
             {
@@ -33,7 +31,7 @@
         {
             using (Html.BeginColumn(12))
             {
-                <a class="btn btn-primary btn-lg">March with us</a>
+                <a href="~/Account/Register" class="btn btn-primary btn-lg">March with us</a>
             }
         }
     }
