@@ -1,0 +1,24 @@
+﻿@{
+    Layout = null;;
+}
+
+<header class="bg1">
+    @using (Html.BeginContainer(new { rel = "menu", @class="text-center" }, "nav"))
+    {
+        using(Html.BeginRow())
+        {
+            using (Html.BeginColumn(2,2))
+            {
+                <img src="~/content/images/logo.png"/>
+            }
+            using (Html.BeginColumn(6, 2))
+            {
+                <ul class="list-inline">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                </ul>
+            }
+        }
+    }
+</header>

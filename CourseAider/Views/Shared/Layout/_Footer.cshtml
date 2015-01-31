@@ -1,0 +1,30 @@
+﻿@{
+    Layout = null;
+}
+<footer>
+    @using (Html.BeginFluidContainer(customTag: "nav"))
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(2,3))
+            {
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+            }
+            using (Html.BeginColumn(2))
+            {
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+            }
+            using (Html.BeginColumn(2))
+            {
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+                <a href="/">Hello</a>
+            }
+        }
+    }
+</footer>
