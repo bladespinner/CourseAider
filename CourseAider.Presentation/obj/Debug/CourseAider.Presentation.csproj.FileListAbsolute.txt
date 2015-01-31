@@ -2,4 +2,3 @@ D:\Projects\C#\www\CourseAider\CourseAider.Presentation\bin\Debug\CourseAider.Pr
 D:\Projects\C#\www\CourseAider\CourseAider.Presentation\bin\Debug\CourseAider.Presentation.pdb
 D:\Projects\C#\www\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.dll
 D:\Projects\C#\www\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.pdb
-D:\Projects\C#\www\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.csprojResolveAssemblyReference.cache
