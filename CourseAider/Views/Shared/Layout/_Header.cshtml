@@ -2,20 +2,32 @@
     Layout = null;;
 }
 
-<header class="bg1">
-    @using (Html.BeginContainer(new { rel = "menu", @class="text-center" }, "nav"))
+<header class="ca-bg3">
+    @using (Html.BeginContainer(new { rel = "menu", @class="text-right" }, "nav"))
     {
         using(Html.BeginRow())
         {
             using (Html.BeginColumn(2,2))
             {
-                <img src="~/content/images/logo.png"/>
+                <img src="~/content/images/logo2.png"/>
             }
-            using (Html.BeginColumn(6, 2))
+            using (Html.BeginColumn(6))
             {
-                <ul class="list-inline">
+                using(Html.BeginRow())
+                {
+                    using(Html.BeginColumn(12))
+                    {
+                        <div class="ca-site-name">CourseAider</div>
+                        <a href="/">Login</a>
+                    }
+                }
+                <ul class="list-inline ca-menu">
                     <li>
-                        <a href="/">Home</a>
+                        <a class="btn btn-default" href="/">Home</a>
+                        <a class="btn btn-default" href="/">Courses</a>
+                        <a class="btn btn-default" href="/">Popular</a>
+                        <a class="btn btn-default" href="/">New</a>
+                        <a class="btn btn-default" href="/">About</a>
                     </li>
                 </ul>
             }

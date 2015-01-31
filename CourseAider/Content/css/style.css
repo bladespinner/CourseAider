@@ -1,9 +1,44 @@
-﻿.bg1{
+﻿body{
+    font-family:'Century Gothic';
+}
+.ca-bg1{
     background-color:#a86c6c;
 }
-.bg2{
+.ca-bg2{
     background-color:#adff75;
 }
-.bg3{
+
+.ca-bg3{
     background-color:#b10d0d;
+    color:white;
+}
+.ca-bg3 a{
+    color:white;
+    text-shadow:0px 1px black;
+}
+.ca-bg3 .btn {
+    color:#b10d0d;
+}
+.ca-bg3 .btn:hover{
+    background:#b10d0d;
+    color:white;
+}
+
+.ca-bg4{
+    background-color:silver;
+}
+
+.btn{
+    border-radius:0;
+}
+
+.ca-menu{
+    margin: 10px -5px 10px 0px;
+}
+.ca-site-name{
+    margin: 10px 0px 0px 0px;
+    font-size:30px;
+    font-family:'Century Gothic';
+    color:#b10d0d;
+    text-shadow:0px 1px white,0px -1px white,1px 0px white,-1px 0px white;
 }
