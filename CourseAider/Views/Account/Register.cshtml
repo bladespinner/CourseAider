@@ -53,6 +53,11 @@
                         @Html.LabelFor(m => m.ConfirmPassword)
                         @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
                     </div>
+        
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.IsTeacher, new { @style = "display:inline" })
+                        @Html.CheckBoxFor(m => m.IsTeacher, new { @style = "display:inline" })
+                    </div>
 
                     <div class="form-group">
                         <input type="submit" value="Register" class="form-control" />

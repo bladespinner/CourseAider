@@ -31,7 +31,7 @@
         {
             using (Html.BeginColumn(12))
             {
-                <a href="~/Account/Register" class="btn btn-primary btn-lg">March with us</a>
+                @Html.ActionLink("March with us", "Register", "Account", null, new { @class = "btn btn-primary btn-lg" })
             }
         }
     }

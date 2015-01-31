@@ -25,6 +25,7 @@ namespace CourseAider.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
         public string UserName { get; set; }
+        public bool IsTeacher { get; set; }
     }
 
     public class RegisterExternalLoginModel
@@ -86,6 +87,10 @@ namespace CourseAider.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Are you a teacher?")]
+        public bool IsTeacher { get; set; }
     }
 
     public class ExternalLogin
