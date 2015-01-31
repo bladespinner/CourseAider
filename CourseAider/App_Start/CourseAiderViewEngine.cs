@@ -11,7 +11,8 @@ namespace CourseAider.App_Start
         public CourseAiderViewEngine()
         {
             var viewLocations = new[] {  
-            "~/Views/{1}/{0}.cshtml",  
+            "~/Views/{1}/{0}.cshtml",
+            "~/Views/{1}/Partial/{0}.cshtml",
             "~/Views/Shared/{0}.cshtml",  
             "~/Views/Shared/Layout/{0}.cshtml",
         };

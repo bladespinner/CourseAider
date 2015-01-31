@@ -48,3 +48,7 @@ D:\Projects\C#\www\CourseAider\CourseAider\bin\System.Xml.Linq.dll
 D:\Projects\C#\www\CourseAider\CourseAider\bin\System.Net.Http.Formatting.xml
 D:\Projects\C#\www\CourseAider\CourseAider\bin\System.Web.Http.xml
 D:\Projects\C#\www\CourseAider\CourseAider\bin\System.Web.Http.WebHost.xml
+D:\Projects\C#\www\CourseAider\CourseAider\bin\EntityFramework.dll
+D:\Projects\C#\www\CourseAider\CourseAider\bin\EntityFramework.SqlServer.dll
+D:\Projects\C#\www\CourseAider\CourseAider\bin\EntityFramework.xml
+D:\Projects\C#\www\CourseAider\CourseAider\bin\EntityFramework.SqlServer.xml

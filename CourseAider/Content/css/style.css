@@ -1,11 +1,72 @@
 ﻿body{
     font-family:'Century Gothic';
+    color:#b10d0d;
+}
+section{
+    padding:10px 0px 10px 0px;
+}
+h1{
+    font-size:1.5em;
+}
+h2{
+    font-size:1.3em;
+}
+h3{
+    margin:0;
+    font-size:1.1em;
+}
+
+.btn-primary
+{
+    background:#b10d0d;
+    border:1px solid black;
+    color:white;
+}
+.btn-primary:hover
+{
+    background:white;
+    border:1px solid #b10d0d;
+    color:#b10d0d;
+}
+
+.ca-courses img{
+    vertical-align: middle;
+    width:100%;
+    height:80px;
+}
+.ca-title-holder{
+    position:absolute;
+    width:90%;
+    top:20%;
+    height:2.5em;
+    left:5%;
+    background:rgba(77,77,77,0.8);
+}
+.ca-title-holder > h3{
+    color:white;
+}
+.ca-courses{
+    text-align:center;
 }
 .ca-bg1{
-    background-color:#a86c6c;
+    background-color:white;
 }
 .ca-bg2{
-    background-color:#adff75;
+    background-color:black;
+    border-top:2px solid #b10d0d;
+    border-bottom:2px solid #b10d0d;
+}
+.ca-checkbox-list{
+    list-style:none;
+    padding-left:10px;
+}
+.ca-checkbox-list li{
+    margin:5px;
+    font-style:italic;
+}
+
+.ca-checkbox-list > li > span.glyphicon{
+    color:#88cc88;
 }
 
 .ca-bg3{

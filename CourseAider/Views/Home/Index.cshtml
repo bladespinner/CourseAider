@@ -4,14 +4,104 @@
     
 }
 
-@using(Html.BeginContainer())
-{
-    using(Html.BeginRow())
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
     {
-        using(Html.BeginColumn(12))
+        using (Html.BeginRow())
         {
-            
+            using (Html.BeginColumn(5))
+            {
+                <h1>CourseAider - Advancing togheter against ignorance</h1>
+                <text>
+                    CourseAider is an interactive system aimed at students and teachers,
+                    which eases education and group work by bringing toghether the students
+                    and the teachers in collective discussions.
+                </text>
+            }
+            using (Html.BeginColumn(7))
+            {
+                @Html.Partial("_LatestCourses")
+            }
         }
     }
-}
-<h2>Index</h2>
+</section>
+
+<section class="ca-bg2 text-center">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <a class="btn btn-primary btn-lg">March with us</a>
+            }
+        }
+    }
+</section>
+
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(6))
+            {
+                <h2>Monthly Top Three</h2>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Total Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>1</th>
+                            <th>John Smith</th>
+                            <th>1096</th>
+                        </tr>
+                        <tr>
+                            <th>2</th>
+                            <th>Drake Peterson</th>
+                            <th>897</th>
+                        </tr>
+                        <tr>
+                            <th>3</th>
+                            <th>Flame Cannon</th>
+                            <th>677</th>
+                        </tr>
+                    </tbody>
+                </table>
+            }
+            using (Html.BeginColumn(6))
+            {
+                using (Html.BeginRow())
+                {
+                    using (Html.BeginColumn(6))
+                    {
+                        <strong>What do we offer for teachers:</strong>
+                        <ul class="ca-checkbox-list">
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Intelligent knowlege management system.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Communication setup and management solution for courses.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Course creation, storage and organization of class materials.</li>
+                        </ul>
+                    }
+                    using (Html.BeginColumn(6))
+                    {
+                        <strong>What do we offer for Students:</strong>
+                        <ul class="ca-checkbox-list">
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Enchanced learning experience.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Ease of communication with tutors and fellow pupils.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Intelligent knowlege storing for simplest of ease.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Bright future.</li>
+                            <li><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Scholarship options.</li>
+                        </ul>
+                    }
+                }
+
+            }
+        }
+    }
+</section>
+
