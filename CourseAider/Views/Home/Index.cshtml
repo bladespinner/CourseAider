@@ -31,7 +31,14 @@
         {
             using (Html.BeginColumn(12))
             {
-                @Html.ActionLink("March with us", "Register", "Account", null, new { @class = "btn btn-primary btn-lg" })
+                if (!Request.IsAuthenticated)
+                { 
+                    @Html.ActionLink("March with us", "Register", "Account", null, new { @class = "btn btn-primary btn-lg" })
+                }
+                else
+                {
+                    <p>Visit <a href="">Your courses</a> or see <a href="">Your profile</a></p>
+                }
             }
         }
     }
@@ -69,6 +76,14 @@
                             <th>Flame Cannon</th>
                             <th>677</th>
                         </tr>
+                        @if (Request.IsAuthenticated)
+                        {
+                            <tr class="danger">
+                                <th>4</th>
+                                <th>> @User.Identity.Name</th>
+                                <th>128</th>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             }
