@@ -25,11 +25,11 @@ namespace CourseAider.Filters
         {
             public SimpleMembershipInitializer()
             {
-                Database.SetInitializer<UsersContext>(null);
+                Database.SetInitializer<CourseAiderContext>(null);
 
                 try
                 {
-                    using (var context = new UsersContext())
+                    using (var context = new CourseAiderContext())
                     {
                         if (!context.Database.Exists())
                         {
