@@ -80,3 +80,14 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider\obj\Debug\CourseAider.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\obj\Debug\CourseAider.pdb
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\CourseAider.Presentation.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\CourseAider.Presentation.pdb
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\IrcDotNet.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\IrcDotNet.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.Owin.Host.SystemWeb.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Owin.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.Owin.Host.SystemWeb.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.xml

@@ -87,6 +87,8 @@ namespace CourseAider.Controllers
 
                 course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
 
+                course.DateCreated = DateTime.Now;
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

@@ -15,6 +15,7 @@ namespace CourseAider.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public string Image { get; set; }
+        public DateTime DateCreated { get; set; }
         public virtual IList<Group> Groups { get; set; }
         public virtual IList<UserProfile> Members { get; set; }
         public virtual UserProfile Creator { get; set; }
