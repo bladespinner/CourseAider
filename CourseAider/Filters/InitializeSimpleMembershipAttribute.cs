@@ -5,6 +5,7 @@ using System.Threading;
 using System.Web.Mvc;
 using WebMatrix.WebData;
 using CourseAider.Models;
+using System.Web.Security;
 
 namespace CourseAider.Filters
 {
@@ -37,8 +38,16 @@ namespace CourseAider.Filters
                             ((IObjectContextAdapter)context).ObjectContext.CreateDatabase();
                         }
                     }
-
+                    
                     WebSecurity.InitializeDatabaseConnection("DefaultConnection", "UserProfile", "UserId", "UserName", autoCreateTables: true);
+                    if (!Roles.RoleExists("Teacher"))
+                    {
+                        Roles.CreateRole("Teacher");
+                    }
+                    if (!Roles.RoleExists("Student"))
+                    {
+                        Roles.CreateRole("Student");
+                    }
                 }
                 catch (Exception ex)
                 {

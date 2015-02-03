@@ -6,9 +6,13 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseAider.Models;
+using WebMatrix.WebData;
+using CourseAider.Filters;
+using System.IO;
 
 namespace CourseAider.Controllers
 {
+    [InitializeSimpleMembership]
     public class CourseController : Controller
     {
         private CourseAiderContext db = new CourseAiderContext();
@@ -36,32 +40,63 @@ namespace CourseAider.Controllers
 
         //
         // GET: /Course/Create
-
+        [Authorize(Roles="Teacher")]
         public ActionResult Create()
         {
             return View();
         }
 
+        private string SaveFile(HttpPostedFileBase file, string type, string id)
+        {
+            string fileName = file.FileName.Split('\\').Last();
+            string filePath = Server.MapPath("~/UserData/" + type + "/" + id);
+            if (!Directory.Exists(filePath))
+            {
+                System.IO.Directory.CreateDirectory(filePath);
+            }
+            var imgPath = filePath + "\\" + fileName;
+            file.SaveAs(imgPath);
+
+            string webPath = "/UserData/Courses/" + id + "/" + fileName;
+            return webPath;
+        }
+
         //
         // POST: /Course/Create
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Course course)
+        [Authorize(Roles = "Teacher")]
+        public ActionResult Create(CreateCourseModel courseModel)
         {
             if (ModelState.IsValid)
             {
-                db.Courses.Add(course);
+                Course course = new Course();
+                //set creator to current user
+                course.Creator = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+                course.Members = new List<UserProfile>();
+                course.Members.Add(course.Creator);
+
+                course.Name = courseModel.Name;
+                course.Image = courseModel.Image.FileName;
+
+                course = db.Courses.Add(course);
+
+                //persist changes and refresh so we get an courseId
+                db.SaveChanges();
+                db.Entry(course).GetDatabaseValues();
+
+                course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(course);
+            return View(courseModel);
         }
 
         //
         // GET: /Course/Edit/5
-
+        [Authorize(Roles = "Teacher")]
         public ActionResult Edit(int id = 0)
         {
             Course course = db.Courses.Find(id);
@@ -77,6 +112,7 @@ namespace CourseAider.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult Edit(Course course)
         {
             if (ModelState.IsValid)
@@ -90,7 +126,7 @@ namespace CourseAider.Controllers
 
         //
         // GET: /Course/Delete/5
-
+        [Authorize(Roles = "Teacher")]
         public ActionResult Delete(int id = 0)
         {
             Course course = db.Courses.Find(id);
@@ -106,6 +142,7 @@ namespace CourseAider.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Teacher")]
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);

@@ -84,6 +84,14 @@ namespace CourseAider.Controllers
                         IsTeacher = model.IsTeacher
                     });
                     WebSecurity.Login(model.UserName, model.Password);
+                    if (model.IsTeacher)
+                    {
+                        Roles.AddUserToRole(model.UserName, "Teacher");
+                    }
+                    else
+                    {
+                        Roles.AddUserToRole(model.UserName, "Student");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)

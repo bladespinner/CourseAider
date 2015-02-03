@@ -188,12 +188,14 @@
     <Compile Include="Controllers\CourseController.cs" />
     <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Filters\FileAttribute.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CourseAiderContext.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\CreateCourseModel.cs" />
     <Compile Include="Models\ExternalLogin.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\LocalPasswordModel.cs" />
