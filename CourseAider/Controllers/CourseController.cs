@@ -35,6 +35,7 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -83,6 +84,7 @@ namespace CourseAider.Controllers
 
                 //persist changes and refresh so we get an courseId
                 course.DateCreated = DateTime.Now;
+
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
