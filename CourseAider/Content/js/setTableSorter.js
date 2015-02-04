@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-﻿$(document).ready(function () {
+$(document).ready(function () {
     
     $.extend($.tablesorter.themes.jui, {
         // change default jQuery uitheme icons - find the full list of icons here: http://jqueryui.com/themeroller/ (hover over them for their name)
