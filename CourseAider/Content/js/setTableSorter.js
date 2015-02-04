@@ -1,10 +1,5 @@
 ﻿$(document).ready(function () {
-    var pagerOptions = {
-        container: $(".tablesorter"),
-        output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
-        cssGoto: '.gotoPage'
-    };
-
+    
     $.extend($.tablesorter.themes.jui, {
         // change default jQuery uitheme icons - find the full list of icons here: http://jqueryui.com/themeroller/ (hover over them for their name)
         table: 'ui-widget ui-widget-content ui-corner-all', // table classes
@@ -29,7 +24,13 @@
         headerTemplate : '{content} {icon}',
         widgets: ['zebra', 'filter', 'uitheme']
     });
-    //$('.tablesorter').tablesorterPager(pagerOptions);
+    $('.tablesorter').tablesorterPager({
+        container: $(".pager"),
+        cssGoto: '.gotoPage',
+        output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
+        page: 0,
+     
+    });
     
     
 });

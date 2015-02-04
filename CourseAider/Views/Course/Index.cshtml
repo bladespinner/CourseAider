@@ -12,17 +12,17 @@
 <link href="~/content/css/jquery.tablesorter.pager.css" rel="stylesheet" />
 
 <script src="~/content/js/settablesorter.js"></script>
-<h2>Index</h2>
+<h1 class="text-center"><strong> All Courses </strong></h1>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+<div class="text-center">
+    @Html.ActionLink("Create New", "Create", new { }, new { @class = "text-center btn btn-default" })
+</div>
 <div class="row">
     <div class="col-lg-9 col-md-offset-2">
         <table class="tablesorter">
             <thead>
                 <tr>
-                    <th >
+                    <th>
                         @Html.DisplayNameFor(model => model.Name)
                     </th>
                     <th data-sorter="false"> Actions</th>
@@ -33,22 +33,39 @@
                 {
                     <tr>
                         <td>
-                            
+
                             @Html.DisplayFor(modelItem => item.Name)
-                            <img src="@item.Image"  class="pull-right" style="max-height:50px;max-width:70px"/>
+                            <img src="@item.Image" class="pull-right" style="max-height:50px;max-width:70px" />
                         </td>
                         <td>
                             <div class="pull-right">
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default" }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
+
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
-
         </table>
+            <div class="pager">
+                Page: <select class="gotoPage"></select>
+                <img src="~/images/first.png" class="first disabled" alt="First" title="First page" />
+                <img src="/images/prev.png" class="prev disabled" alt="Prev" title="Previous page" />
+
+                <span class="pagedisplay"></span> 
+
+                <img src="/images/next.png" class="next" alt="Next" title="Next page" />
+                <img src="/images/last.png" class="last" alt="Last" title="Last page" .>
+                <select class="pagesize">
+                    <option selected="selected" value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="30">30</option>
+                    <option value="40">40</option>
+                </select>
+            </div>
     </div>
 </div>
+    
 
