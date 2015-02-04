@@ -3,38 +3,52 @@
 @{
     ViewBag.Title = "Index";
 }
+<script type="text/javascript" src="~/scripts/jquery.tablesorter.min.js"></script>
+<script type="text/javascript" src="~/scripts/jquery.tablesorter.pager.js"></script>
+<script src="~/scripts/jquery.tablesorter.widgets.min.js"></script>
 
+<link href="~/content/sorter/style.css" rel="stylesheet" />
+<link href="~/content/themes/base/jquery.ui.all.css" rel="stylesheet" />
+<link href="~/content/css/jquery.tablesorter.pager.css" rel="stylesheet" />
+
+<script src="~/content/js/settablesorter.js"></script>
 <h2>Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Image)
-        </th>
-        <th></th>
-    </tr>
+<div class="row">
+    <div class="col-lg-9 col-md-offset-2">
+        <table class="tablesorter">
+            <thead>
+                <tr>
+                    <th >
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                    <th data-sorter="false"> Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            
+                            @Html.DisplayFor(modelItem => item.Name)
+                            <img src="@item.Image"  class="pull-right" style="max-height:50px;max-width:70px"/>
+                        </td>
+                        <td>
+                            <div class="pull-right">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Image)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
+        </table>
+    </div>
+</div>
 
-</table>
-Cool stuff here

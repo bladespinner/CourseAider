@@ -235,6 +235,7 @@
     <Content Include="Content\css\bootstrap-theme.min.css" />
     <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
+    <Content Include="Content\css\jquery.tablesorter.pager.css" />
     <Content Include="Content\css\style.css" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\images\logo.png" />
@@ -242,6 +243,7 @@
     <Content Include="Content\images\teacher.png" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\setTableSorter.js" />
     <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\npm.js" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -320,6 +322,8 @@
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
     <Content Include="Scripts\jquery.tablesorter.pager.js" />
+    <Content Include="Scripts\jquery.tablesorter.pager.min.js" />
+    <Content Include="Scripts\jquery.tablesorter.widgets.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -329,10 +333,10 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="sorter\asc.gif" />
-    <Content Include="sorter\bg.gif" />
-    <Content Include="sorter\desc.gif" />
-    <Content Include="sorter\style.css" />
+    <Content Include="Content\sorter\asc.gif" />
+    <Content Include="Content\sorter\bg.gif" />
+    <Content Include="Content\sorter\desc.gif" />
+    <Content Include="Content\sorter\style.css" />
     <Content Include="tablesorter.txt" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
