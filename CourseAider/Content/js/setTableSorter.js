@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿$(document).ready(function () {
     
     $.extend($.tablesorter.themes.jui, {
@@ -24,9 +25,7 @@
         headerTemplate : '{content} {icon}',
         widgets: ['zebra', 'filter', 'uitheme']
     }).tablesorterPager({
-        container: $('.pager')
+        container: $('.pager'),
+        output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
     });
-
-    
-    
 });

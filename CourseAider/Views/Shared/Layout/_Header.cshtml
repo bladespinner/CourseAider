@@ -23,12 +23,12 @@
                 }
                 <ul class="list-inline ca-menu">
                     <li>
-                        <a class="btn btn-default" href="/">Home</a>
-                        <a class="btn btn-default" href="/">Courses</a>
-                        <a class="btn btn-default" href="/">Popular</a>
-                        <a class="btn btn-default" href="/">New</a>
-                        <a class="btn btn-default" href="/">About</a>
-                    </li>
+                        @Html.ActionLink("Home", "Index", "Home", null, new { @class="btn btn-default" })
+                        @Html.ActionLink("Courses", "Index", "Course", null, new { @class = "btn btn-default" })
+                            <a class="btn btn-default" href="/">Popular</a>
+                            <a class="btn btn-default" href="/">New</a>
+                            <a class="btn btn-default" href="/">About</a>
+</li>
                 </ul>
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseAider.Models;
+using WebMatrix.WebData;
 
 namespace CourseAider.Controllers
 {
@@ -32,14 +33,26 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                isTeacher = profile.IsTeacher;
+            }
+            ViewBag.isTeacher = isTeacher;
             return View(group);
         }
 
         //
         // GET: /Group/Create
 
-        public ActionResult Create()
+        public ActionResult Create(int id = 0)
         {
+            if (db.Courses.Find(id) == null)
+            {
+                return HttpNotFound();
+            }
             return View();
         }
 
@@ -48,13 +61,19 @@ namespace CourseAider.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Group group)
+        public ActionResult Create(Group group, int id = 0)
         {
             if (ModelState.IsValid)
             {
+                var course = db.Courses.Find(id);
+                if (course == null)
+                {
+                    return HttpNotFound();
+                }
+                group.Course = course;
                 db.Groups.Add(group);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Group", new { id = group.Id });
             }
 
             return View(group);
