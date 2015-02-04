@@ -81,7 +81,7 @@
                             <button type="button" id="sendmessage" class="btn btn-default">Submit</button>
                         </div>
                         <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#">Link</a></li>
+                        <li><a id="powerlevel">OP</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
@@ -96,11 +96,17 @@
                     </div><!-- /.navbar-collapse -->
                     </div><!-- /.container-fluid -->
                 </nav>
+        
+                <div class="well well-sm ca-user-list ">
+                    <h4>Online:</h4>
+                    <p id="user-list">
+                       Loading user data..
+                    </p>
+                </div>
             }
         }
     }
 </section>
-
 
 <!-- Button trigger modal -->
 @*
@@ -137,51 +143,99 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
+        $(function () {
+            var isTeacher = @(ViewBag.isTeacher.ToString().ToLower()) ;
+            // Reference the auto-generated proxy for the hub.
+            var chat = $.connection.chatHub;
+            // Create a function that the hub can call back to display messages.
+            chat.client.addNewMessageToPage = function (name, message, type) {
+                // Add the message to the page.
+                $('#discussion').append('<li><strong>' + htmlEncode(name)
+                    + '</strong>: ' + htmlEncode(message) + '</li>');
+            };
+            chat.client.notify = function (text) {
+                $('#discussion').append('<div class="text-info"> SERVER : ' + htmlEncode(text) + '</div>');
+            }
+            chat.client.error = function (errorMessage) {
+                $('#discussion').append('<div class="text-error"> SERVER : ' + htmlEncode(errorMessage) + '</div>');
+            }
+            chat.client.message = function (sender, message) {
+                $('#discussion').append('<div class="text-success"><b class="text-warning">' + htmlEncode(sender) + " : </b>" + htmlEncode(message) + '</div>');
+            }
+            chat.client.listUpdate = function (list){
+                $('#user-list').html("");
+                var users = list.split(',');
+                for(var i = 0 ; i < users.length; i++){
+                    $('#user-list').append('<span>'+users[i]+'</span>');
+                }
+            }
+            // Set initial focus to message input box.
+            $('#message').focus();
 
-    $(function () {
-        // Reference the auto-generated proxy for the hub.
-        var chat = $.connection.chatHub;
-        // Create a function that the hub can call back to display messages.
-        chat.client.addNewMessageToPage = function (name, message, type) {
-            // Add the message to the page.
-            $('#discussion').append('<li><strong>' + htmlEncode(name)
-                + '</strong>: ' + htmlEncode(message) + '</li>');
-        };
-        chat.client.promptLogin = function () {
-
-        }
-        chat.client.notify = function (text) {
-            $('#discussion').append('<div class="text-info"> SERVER : ' + htmlEncode(text) + '</div>');
-        }
-        chat.client.error = function (errorMessage) {
-            $('#discussion').append('<div class="text-error"> SERVER : ' + htmlEncode(errorMessage) + '</div>');
-        }
-        chat.client.message = function (sender, message) {
-            $('#discussion').append('<div class="text-success"><b class="text-warning">' + htmlEncode(sender) + " : </b>" + htmlEncode(message) + '</div>');
-        }
-        // Set initial focus to message input box.
-        $('#message').focus();
-        // Start the connection.
-        $.connection.hub.start().done(function () {
-            chat.server.connect("@Model.IRCChannel");
-                $('#sendmessage').click(function (e) {
-                    // Call the Send method on the hub.
-                    chat.server.send($('#message').val());
-                    // Clear text box and reset focus for next comment.
-                    $('#discussion').append('<div class="text-success"><b class="text-info"><i>You</i></b>' + htmlEncode($('#message').val()) + '</div>');
-                    $('#message').val('').focus();
-                    e.preventDefault();
-                });
-                $('#message').keydown(function (e) {
-                    if (e.keyCode == 13) { //ENTER
+            // Start the connection.
+            $.connection.hub.start().done(function () {
+                setInterval(function(){
+                    chat.server.list();
+                },5000);
+                chat.server.connect("@Model.IRCChannel");
+                    $('#sendmessage').click(function (e) {
+                        if ($('#message').val() == '') return;
+                        // Call the Send method on the hub.
                         chat.server.send($('#message').val());
+                        // Clear text box and reset focus for next comment.
                         $('#discussion').append('<div class="text-success"><b class="text-info"><i>You : </i></b>' + htmlEncode($('#message').val()) + '</div>');
                         $('#message').val('').focus();
                         e.preventDefault();
-                    }
-                });
+                    });
+                    $('#message').keydown(function (e) {
+                        if (e.keyCode == 13) { //ENTER
+                            if ($('#message').val() == '') return;
+                            chat.server.send($('#message').val());
+                            $('#discussion').append('<div class="text-success"><b class="text-info"><i>You : </i></b>' + htmlEncode($('#message').val()) + '</div>');
+                            $('#message').val('').focus();
+                            e.preventDefault();
+                        }
+                    });
+                    $('#powerlevel').click(function (e) {
+                        becomeOP();
+                    });
             });
         });
+
+        function toggleChatInSilentMode()
+        {
+            var message = "Silent mode setting changed to {0}."
+            toggleMode("m",message,"");//m means Moderated, only OP can speak and voiced people
+        }
+
+        function toggleVoice(user)
+        {
+            var message = "User " + user + "has voice has been set to {0}.";
+            toggleMode("v",message,user);//v means Voice, he is now in the voiced group
+        }
+
+        function toggleBan(user)
+        {
+            var message = "User " + user +"has been banned.";
+            toggleMode("b",message,user);
+            kick(user);
+        }
+
+        function kick(user)
+        {
+            var chat = $.connection.chatHub;
+            chat.server.kick(user);
+        }
+        function becomeOP()
+        {
+            var chat = $.connection.chatHub;
+            chat.server.becomeOperator();
+        }
+        function toggleMode(mode,message,target)
+        {
+            var chat = $.connection.chatHub;
+            chat.server.toggleMode(mode,message,target);
+        }
         // This optional function html-encodes messages for display in the page.
         function htmlEncode(value) {
             var encodedValue = $('<div />').text(value).html();

@@ -80,14 +80,13 @@ namespace CourseAider.Controllers
                 course.Image = courseModel.Image.FileName;
 
                 course = db.Courses.Add(course);
+                course.DateCreated = DateTime.Now;
 
                 //persist changes and refresh so we get an courseId
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
                 course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
-
-                course.DateCreated = DateTime.Now;
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

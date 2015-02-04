@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using CourseAider.Models;
+using WebMatrix.WebData;
 
 namespace CourseAider.Controllers
 {
@@ -32,6 +33,14 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                isTeacher = profile.IsTeacher;
+            }
+            ViewBag.isTeacher = isTeacher;
             return View(group);
         }
 
