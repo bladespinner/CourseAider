@@ -135,3 +135,6 @@ figure.ca-testimonial span{
     color:#b10d0d;
     text-shadow:0px 1px white,0px -1px white,1px 0px white,-1px 0px white;
 }
+.ca-chat{
+    height:350px;
+}
