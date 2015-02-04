@@ -23,14 +23,10 @@
         theme: 'jui',
         headerTemplate : '{content} {icon}',
         widgets: ['zebra', 'filter', 'uitheme']
+    }).tablesorterPager({
+        container: $('.pager')
     });
-    $('.tablesorter').tablesorterPager({
-        container: $(".pager"),
-        cssGoto: '.gotoPage',
-        output: '{startRow} - {endRow} / {filteredRows} ({totalRows})',
-        page: 0,
-     
-    });
+
     
     
 });
