@@ -9,6 +9,7 @@ using CourseAider.Models;
 
 namespace CourseAider.Controllers
 {
+    [Authorize]
     public class GroupController : Controller
     {
         private CourseAiderContext db = new CourseAiderContext();

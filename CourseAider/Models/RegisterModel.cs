@@ -24,6 +24,10 @@ namespace CourseAider.Models
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [Display(Name = "Real Name")]
+        public string RealName { get; set; }
+
+        [Required]
         [Display(Name = "Are you a teacher?")]
         public bool IsTeacher { get; set; }
     }

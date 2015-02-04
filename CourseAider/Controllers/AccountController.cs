@@ -81,7 +81,9 @@ namespace CourseAider.Controllers
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password, new
                     {
-                        IsTeacher = model.IsTeacher
+                        IsTeacher = model.IsTeacher,
+                        IrcCredential = Guid.NewGuid().ToString(),
+                        RealName = model.RealName
                     });
                     WebSecurity.Login(model.UserName, model.Password);
                     if (model.IsTeacher)

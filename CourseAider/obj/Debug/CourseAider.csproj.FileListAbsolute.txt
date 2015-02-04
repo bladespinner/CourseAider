@@ -28,7 +28,6 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\WebGrease.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\WebMatrix.Data.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\WebMatrix.WebData.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\EntityFramework.xml
-D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Newtonsoft.Json.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\System.Web.Helpers.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\System.Web.Mvc.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\System.Web.Razor.xml
@@ -91,3 +90,4 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.Owin.Host.SystemWeb.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Newtonsoft.Json.xml

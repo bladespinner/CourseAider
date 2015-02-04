@@ -7,6 +7,7 @@ using System.Collections.Concurrent;
 using IrcDotNet;
 using System.Configuration;
 using CourseAider.Chat;
+using CourseAider.Models;
 
 namespace CourseAider.Hubs
 {
@@ -33,8 +34,17 @@ namespace CourseAider.Hubs
             return base.OnDisconnected();
         }
 
-        public void Connect(string password,string channel)
+        public void Connect(string channel)
         {
+            if(!this.Context.User.Identity.IsAuthenticated) return;
+
+            string password;
+            using(CourseAiderContext context = new CourseAiderContext())
+            {
+                var prof = context.UserProfiles.FirstOrDefault(profile => profile.UserName == this.Context.User.Identity.Name);
+                password = prof.IrcCredential;
+            }
+            
             IrcClient ircClient;
             if(clients.TryGetValue(this.Context.User.Identity.Name,out ircClient))
             {

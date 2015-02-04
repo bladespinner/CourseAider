@@ -43,6 +43,11 @@
                         @Html.LabelFor(m => m.UserName)
                         @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
                     </div>
+        
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.RealName)
+                        @Html.TextBoxFor(m => m.RealName, new { @class = "form-control" })
+                    </div>
 
                     <div class="form-group">
                         @Html.LabelFor(m => m.Password)
@@ -67,7 +72,7 @@
             using (Html.BeginColumn(6))
             {
                 <figure class="ca-testimonial">
-                    <img src="~/Content/images/teacher.png"
+                    <img src="~/Content/images/teacher.png" />
                     <p>
                         CourseAider is the best thing that has happened to my classes, I increased the
                         prodocivity of my students by almost 150%.
