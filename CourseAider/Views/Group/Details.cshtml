@@ -60,6 +60,15 @@
                 $('#discussion').append('<li><strong>' + htmlEncode(name)
                     + '</strong>: ' + htmlEncode(message) + '</li>');
             };
+            chat.client.promptLogin = function () {
+
+            }
+            chat.client.notify = function (text) {
+                $('#discussion').append('<li><strong style="color:green">' + text + '</li>');
+            }
+            chat.client.error = function (errorMessage) {
+                $('#discussion').append('<li><strong style="color:red">' + errorMessage + '</li>');
+            }
             // Get the user name and store it to prepend to messages.
             $('#displayname').val(prompt('Enter your name:', ''));
             // Set initial focus to message input box.
@@ -68,7 +77,7 @@
             $.connection.hub.start().done(function () {
                 $('#sendmessage').click(function () {
                     // Call the Send method on the hub.
-                    chat.server.send($('#displayname').val(), $('#message').val());
+                    chat.server.connect($('#displayname').val(), "@Model.IRCChannel");
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
                 });
