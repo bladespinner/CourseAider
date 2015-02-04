@@ -38,9 +38,10 @@ namespace CourseAider.Hubs
         {
             if(!this.Context.User.Identity.IsAuthenticated) return;
             string password;
+            UserProfile prof;
             using(CourseAiderContext context = new CourseAiderContext())
             {
-                var prof = context.UserProfiles.FirstOrDefault(profile => profile.UserName == this.Context.User.Identity.Name);
+                prof = context.UserProfiles.FirstOrDefault(profile => profile.UserName == this.Context.User.Identity.Name);
                 password = prof.IrcCredential;
                 Clients.Caller.notify("Transfering credentials...");
             }
@@ -79,9 +80,9 @@ namespace CourseAider.Hubs
                 Clients.Caller.notify("Attempting connection...");
                 ircClient.Connect(new Uri(Configuration.IrcServerUri), new IrcUserRegistrationInfo()
                 {
-                    NickName = this.Context.User.Identity.Name,
-                    UserName = this.Context.User.Identity.Name,
-                    RealName = this.Context.User.Identity.Name,
+                    NickName = prof.UserName,
+                    UserName = prof.UserName,
+                    RealName = prof.RealName,
                     Password = password,
                 });
                 
@@ -111,20 +112,22 @@ namespace CourseAider.Hubs
                 caller.notify("Connection established, you can now start talking");
                 channel.MessageReceived += (object s, IrcMessageEventArgs e) =>
                 {
-                    caller.notify(e.Text);
+                    caller.message(e.Source.Name, e.Text);
                 };
                 user.MessageReceived += (object s, IrcMessageEventArgs e) =>
                 {
-                    caller.notify(e.Text);
+                    caller.privateMessage(e.Source.Name, e.Text);
                 };
             };
         }
 
         public void Send(string message)
         {
+            if(!this.Context.User.Identity.IsAuthenticated) return;
+
             string name = this.Context.User.Identity.Name;
-            // Call the addNewMessageToPage method to update clients.
-            // Clients.All.addNewMessageToPage(name, message);
+            var client = clients[name];
+            client.LocalUser.SendMessage(client.LocalUser.GetChannelUsers().First().Channel, message);
         }
     }
 }

@@ -69,19 +69,17 @@
                     <div id="discussion" class="ca-chat-window">
 
                     </div>
-                    
-                    <input type="hidden" id="displayname" />
                 </div>
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <form class="navbar-form navbar-left" role="search">
+                        <div class="navbar-form navbar-left" role="search">
                             <div class="form-group">
                                 <input type="text" id="message" class="form-control" placeholder="Message">
                             </div>
                             <button type="button" id="sendmessage" class="btn btn-default">Submit</button>
-                        </form>
+                        </div>
                         <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Link</a></li>
                         <li class="dropdown">
@@ -102,7 +100,6 @@
         }
     }
 </section>
-
 
 
 <!-- Button trigger modal -->
@@ -141,37 +138,47 @@
     <!--SignalR script to update the chat page and send messages.-->
     <script>
 
-        
-        $(function () {
-            // Reference the auto-generated proxy for the hub.
-            var chat = $.connection.chatHub;
-            // Create a function that the hub can call back to display messages.
-            chat.client.addNewMessageToPage = function (name, message, type) {
-                // Add the message to the page.
-                $('#discussion').append('<li><strong>' + htmlEncode(name)
-                    + '</strong>: ' + htmlEncode(message) + '</li>');
-            };
-            chat.client.promptLogin = function () {
+    $(function () {
+        // Reference the auto-generated proxy for the hub.
+        var chat = $.connection.chatHub;
+        // Create a function that the hub can call back to display messages.
+        chat.client.addNewMessageToPage = function (name, message, type) {
+            // Add the message to the page.
+            $('#discussion').append('<li><strong>' + htmlEncode(name)
+                + '</strong>: ' + htmlEncode(message) + '</li>');
+        };
+        chat.client.promptLogin = function () {
 
-            }
-            chat.client.notify = function (text) {
-                $('#discussion').append('<div class="ca-notification">' + htmlEncode(text) + '</div>');
-            }
-            chat.client.error = function (errorMessage) {
-                $('#discussion').append('<div class="ca-error">' + htmlEncode(errorMessage) + '</div>');
-            }
-            // Get the user name and store it to prepend to messages.
-            $('#displayname').val(prompt('Enter your name:', ''));
-            // Set initial focus to message input box.
-            $('#message').focus();
-            // Start the connection.
-            $.connection.hub.start().done(function () {
+        }
+        chat.client.notify = function (text) {
+            $('#discussion').append('<div class="text-info"> SERVER : ' + htmlEncode(text) + '</div>');
+        }
+        chat.client.error = function (errorMessage) {
+            $('#discussion').append('<div class="text-error"> SERVER : ' + htmlEncode(errorMessage) + '</div>');
+        }
+        chat.client.message = function (sender, message) {
+            $('#discussion').append('<div class="text-success"><b class="text-warning">' + htmlEncode(sender) + " : </b>" + htmlEncode(message) + '</div>');
+        }
+        // Set initial focus to message input box.
+        $('#message').focus();
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+            chat.server.connect("@Model.IRCChannel");
                 $('#sendmessage').click(function (e) {
                     // Call the Send method on the hub.
-                    chat.server.connect($('#displayname').val(), "@Model.IRCChannel");
+                    chat.server.send($('#message').val());
                     // Clear text box and reset focus for next comment.
+                    $('#discussion').append('<div class="text-success"><b class="text-info"><i>You</i></b>' + htmlEncode($('#message').val()) + '</div>');
                     $('#message').val('').focus();
                     e.preventDefault();
+                });
+                $('#message').keydown(function (e) {
+                    if (e.keyCode == 13) { //ENTER
+                        chat.server.send($('#message').val());
+                        $('#discussion').append('<div class="text-success"><b class="text-info"><i>You : </i></b>' + htmlEncode($('#message').val()) + '</div>');
+                        $('#message').val('').focus();
+                        e.preventDefault();
+                    }
                 });
             });
         });
