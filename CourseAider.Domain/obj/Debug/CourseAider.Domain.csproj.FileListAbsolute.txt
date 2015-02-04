@@ -6,3 +6,4 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider.Domain\bin\Debug\CourseAider.
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Domain\bin\Debug\CourseAider.Domain.pdb
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Domain\obj\Debug\CourseAider.Domain.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Domain\obj\Debug\CourseAider.Domain.pdb
+D:\Projects\C#\www\Project\CourseAider\CourseAider.Domain\obj\Debug\CourseAider.Domain.csprojResolveAssemblyReference.cache

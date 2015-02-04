@@ -20,7 +20,7 @@ namespace CourseAider.Hubs
             string name = this.Context.User.Identity.Name;
             var ircClient = new IrcClient();
             clients.Add(name, ircClient);
-            string message = "Hello ," + name + ", please authenticate for the chat server";
+            string message = "Hello ," + name;
             Clients.Caller.notify(message);
             return base.OnConnected();
         }
@@ -37,12 +37,12 @@ namespace CourseAider.Hubs
         public void Connect(string channel)
         {
             if(!this.Context.User.Identity.IsAuthenticated) return;
-
             string password;
             using(CourseAiderContext context = new CourseAiderContext())
             {
                 var prof = context.UserProfiles.FirstOrDefault(profile => profile.UserName == this.Context.User.Identity.Name);
                 password = prof.IrcCredential;
+                Clients.Caller.notify("Transfering credentials...");
             }
             
             IrcClient ircClient;
@@ -57,6 +57,7 @@ namespace CourseAider.Hubs
                     IrcClient client = ircClient;
                     ircClient.Registered += (object sender, EventArgs e) =>
                     {
+                        Clients.Caller.notify("Joining chat channel...");
                         client.Channels.Join("#" + chan);
                         RegisterClientEvents(client);
                     };
@@ -75,6 +76,7 @@ namespace CourseAider.Hubs
                 };
                 closure();
 
+                Clients.Caller.notify("Attempting connection...");
                 ircClient.Connect(new Uri(Configuration.IrcServerUri), new IrcUserRegistrationInfo()
                 {
                     NickName = this.Context.User.Identity.Name,

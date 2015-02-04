@@ -66,20 +66,21 @@
             using (Html.BeginColumn(7))
             {
                 <div class="well ca-chat">
-                    <input type="text" id="message" />
-                    <input type="button" id="sendmessage" value="Send" />
+                    <div id="discussion" class="ca-chat-window">
+
+                    </div>
+                    
                     <input type="hidden" id="displayname" />
-                    <ul id="discussion"></ul>
                 </div>
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                         <form class="navbar-form navbar-left" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Message">
-                        </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                            <div class="form-group">
+                                <input type="text" id="message" class="form-control" placeholder="Message">
+                            </div>
+                            <button type="button" id="sendmessage" class="btn btn-default">Submit</button>
                         </form>
                         <ul class="nav navbar-nav navbar-right">
                         <li><a href="#">Link</a></li>
@@ -140,7 +141,7 @@
     <!--SignalR script to update the chat page and send messages.-->
     <script>
 
-        @*
+        
         $(function () {
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
@@ -154,10 +155,10 @@
 
             }
             chat.client.notify = function (text) {
-                $('#discussion').append('<li><strong style="color:green">' + text + '</li>');
+                $('#discussion').append('<div class="ca-notification">' + htmlEncode(text) + '</div>');
             }
             chat.client.error = function (errorMessage) {
-                $('#discussion').append('<li><strong style="color:red">' + errorMessage + '</li>');
+                $('#discussion').append('<div class="ca-error">' + htmlEncode(errorMessage) + '</div>');
             }
             // Get the user name and store it to prepend to messages.
             $('#displayname').val(prompt('Enter your name:', ''));
@@ -165,18 +166,19 @@
             $('#message').focus();
             // Start the connection.
             $.connection.hub.start().done(function () {
-                $('#sendmessage').click(function () {
+                $('#sendmessage').click(function (e) {
                     // Call the Send method on the hub.
                     chat.server.connect($('#displayname').val(), "@Model.IRCChannel");
                     // Clear text box and reset focus for next comment.
                     $('#message').val('').focus();
+                    e.preventDefault();
                 });
-            });*@
-    });
-    // This optional function html-encodes messages for display in the page.
-    function htmlEncode(value) {
-        var encodedValue = $('<div />').text(value).html();
-        return encodedValue;
-    }
+            });
+        });
+        // This optional function html-encodes messages for display in the page.
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
     </script>
 }
