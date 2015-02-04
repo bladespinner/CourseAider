@@ -35,6 +35,7 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
