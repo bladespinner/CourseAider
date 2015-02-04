@@ -14,12 +14,25 @@ namespace CourseAider.Hubs
     [Authorize]
     public class ChatHub : Hub
     {
-        private static Dictionary<string, IrcClient> clients = new Dictionary<string, IrcClient>();
+        private static Dictionary<string, ChatContext> contexts = new Dictionary<string, ChatContext>();
         public override System.Threading.Tasks.Task OnConnected()
         {
             string name = this.Context.User.Identity.Name;
             var ircClient = new IrcClient();
-            clients.Add(name, ircClient);
+            UserProfile profile;
+            using(CourseAiderContext context = new CourseAiderContext())
+            {
+                profile = context.UserProfiles.FirstOrDefault(prof => prof.UserName == this.Context.User.Identity.Name);
+                Clients.Caller.notify("Transfering credentials...");
+            }
+            var chatContext = new ChatContext()
+            {
+                ChatClient = ircClient,
+                IsTeacher = profile.IsTeacher,
+                UserId = profile.UserId,
+                UserName = profile.UserName
+            };
+            contexts.Add(name, chatContext);
             string message = "Hello ," + name;
             Clients.Caller.notify(message);
             return base.OnConnected();
@@ -28,9 +41,9 @@ namespace CourseAider.Hubs
         public override System.Threading.Tasks.Task OnDisconnected()
         {
             string name = this.Context.User.Identity.Name;
-            var client = clients[name];
-            client.Disconnect();
-            clients.Remove(name);
+            var context = contexts[name];
+            context.ChatClient.Disconnect();
+            contexts.Remove(name);
             return base.OnDisconnected();
         }
 
@@ -46,9 +59,10 @@ namespace CourseAider.Hubs
                 Clients.Caller.notify("Transfering credentials...");
             }
             
-            IrcClient ircClient;
-            if(clients.TryGetValue(this.Context.User.Identity.Name,out ircClient))
+            ChatContext ircContext;
+            if (contexts.TryGetValue(this.Context.User.Identity.Name, out ircContext))
             {
+                IrcClient ircClient = ircContext.ChatClient;
                 Action closure = () =>
                 {
                     string user = this.Context.User.Identity.Name;
@@ -72,7 +86,12 @@ namespace CourseAider.Hubs
                     };
                     ircClient.ProtocolError += (object sender, IrcProtocolErrorEventArgs e) =>
                     {
-                        Clients.Caller.error("Protocol:" + e.Message + ", params:" + e.Parameters.Aggregate((a, b) => a + "," + b));
+                        string error = e.Message;
+                        if(e.Parameters != null && e.Parameters.Count > 0)
+                        {
+                            error += ", params:" + e.Parameters.Aggregate((a, b) => a + "," + b);
+                        }
+                        Clients.Caller.error("Protocol:" + error);
                     };
                 };
                 closure();
@@ -85,21 +104,26 @@ namespace CourseAider.Hubs
                     RealName = prof.RealName,
                     Password = password,
                 });
-                
-                /*ircClient.Connect(new Uri(Configuration.IrcServerUri),
-                    new CourseAiderIrcRegistrationInfo(this.Context.User.Identity.Name, password));*/
-
-                //ircClient.IsRegistered
-                //ircClient.Connect();
             }
         }
 
-        public void BecomeOperator(string password)
+        public void BecomeOperator()
         {
-            IrcClient ircClient;
-            if (clients.TryGetValue(this.Context.User.Identity.Name, out ircClient))
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+
+            channel.SetModes("+o", name);
+
+            channel.ModesChanged += (object sender, EventArgs a) =>
             {
-            }
+                Clients.All.notify("Group operator " + name + " has joined");
+            };
         }
 
         private void RegisterClientEvents(IrcClient client)
@@ -121,13 +145,72 @@ namespace CourseAider.Hubs
             };
         }
 
+        public void ToggleMode(string mode,string message,string targets)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+            var modes = channel.Modes.ToList();
+            string setting;
+            if(modes.Contains(mode[0]))
+            {
+                modes.Remove(mode[0]);
+                channel.SetModes(modes.ToArray());
+                setting = "off";
+            }
+            else
+            {
+                channel.SetModes("+"+modes[0],targets.Split(',').Select(a => a.Trim()));
+                setting = "on";
+            }
+
+            channel.ModesChanged += (object sender, EventArgs a) =>
+            {
+                Clients.All.notify(String.Format(message,setting));
+            };
+        }
+
+        public void Kick(string user)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+
+            Clients.All.notify(user + "has been kicked from chat.");
+
+            channel.Kick(user);
+        }
+
+        public void List()
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+            var users = channel.Users.GetUsers();
+         
+            Clients.Caller.listUpdate(users.Select(u => u.NickName).Aggregate((a,b) => a + "," + b));
+        }
+
         public void Send(string message)
         {
             if(!this.Context.User.Identity.IsAuthenticated) return;
 
             string name = this.Context.User.Identity.Name;
-            var client = clients[name];
-            client.LocalUser.SendMessage(client.LocalUser.GetChannelUsers().First().Channel, message);
+            var context = contexts[name];
+            context.ChatClient.LocalUser.SendMessage(context.ChatClient.LocalUser.GetChannelUsers().First().Channel, message);
         }
     }
 }

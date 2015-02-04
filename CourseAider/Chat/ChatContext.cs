@@ -8,7 +8,9 @@ namespace CourseAider.Chat
 {
     public class ChatContext
     {
-        IrcClient ChatClient { get; set; }
-
+        public IrcClient ChatClient { get; set; }
+        public bool IsTeacher { get; set; }
+        public string UserName { get; set; }
+        public int UserId { get; set; }
     }
 }

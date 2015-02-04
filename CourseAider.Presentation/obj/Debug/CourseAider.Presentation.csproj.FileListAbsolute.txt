@@ -33,3 +33,4 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider.Presentation\bin\Debug\System
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Presentation\bin\Debug\System.Web.WebPages.Razor.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.pdb
+D:\Projects\C#\www\Project\CourseAider\CourseAider.Presentation\obj\Debug\CourseAider.Presentation.csprojResolveAssemblyReference.cache

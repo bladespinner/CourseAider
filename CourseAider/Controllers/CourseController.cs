@@ -81,6 +81,7 @@ namespace CourseAider.Controllers
                 course.Image = courseModel.Image.FileName;
 
                 course = db.Courses.Add(course);
+                course.DateCreated = DateTime.Now;
 
                 //persist changes and refresh so we get an courseId
                 course.DateCreated = DateTime.Now;
