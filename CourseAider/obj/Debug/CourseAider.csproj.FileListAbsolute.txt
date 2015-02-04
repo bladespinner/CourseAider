@@ -91,3 +91,7 @@ D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.Owin.Host.Syste
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.dll
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Microsoft.AspNet.SignalR.Owin.xml
 D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Newtonsoft.Json.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Org.Mentalis.Security.Cryptography.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Mono.Math.dll
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Org.Mentalis.Security.Cryptography.xml
+D:\Projects\C#\www\Project\CourseAider\CourseAider\bin\Mono.Math.xml
