@@ -310,6 +310,10 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\connectionStrings.config" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\first.png" />
+    <Content Include="Images\last.png" />
+    <Content Include="Images\next.png" />
+    <Content Include="Images\prev.png" />
     <Content Include="pager\first.png" />
     <Content Include="pager\last.png" />
     <Content Include="pager\next.png" />
