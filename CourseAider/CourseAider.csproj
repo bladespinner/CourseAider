@@ -324,7 +324,6 @@
     <Content Include="Scripts\jquery-ui-1.8.24.js" />
     <Content Include="Scripts\jquery-ui-1.8.24.min.js" />
     <Content Include="Scripts\jquery.tablesorter.min.js" />
-    <Content Include="Scripts\jquery.tablesorter.pager.js" />
     <Content Include="Scripts\jquery.tablesorter.pager.min.js" />
     <Content Include="Scripts\jquery.tablesorter.widgets.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
@@ -393,7 +392,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Filters\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
