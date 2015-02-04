@@ -22,6 +22,15 @@
     <div class="display-field">
         @Html.DisplayFor(model => model.Image)
     </div>
+    <div class="display-label">
+        Course groups:
+    </div>
+    <div class="display-field">
+        @foreach (var item in Model.Groups)
+        {
+        <a href="/group/details/@item.Id">@item.Name</a>
+        }
+    </div>
 </fieldset>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |

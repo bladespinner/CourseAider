@@ -35,6 +35,7 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
             return View(course);
         }
 
@@ -57,7 +58,7 @@ namespace CourseAider.Controllers
             var imgPath = filePath + "\\" + fileName;
             file.SaveAs(imgPath);
 
-            string webPath = "/UserData/Courses/" + id + "/" + fileName;
+            string webPath = "/UserData/" + type + '/' + id + "/" + fileName;
             return webPath;
         }
 
@@ -83,10 +84,14 @@ namespace CourseAider.Controllers
                 course.DateCreated = DateTime.Now;
 
                 //persist changes and refresh so we get an courseId
+                course.DateCreated = DateTime.Now;
+
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
                 course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
+
+            
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
