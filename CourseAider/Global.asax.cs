@@ -1,4 +1,5 @@
 ﻿using CourseAider.App_Start;
+using CourseAider.DataStreamFormatters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using System.Web.SessionState;
 
 namespace CourseAider
 {
@@ -15,6 +17,19 @@ namespace CourseAider
 
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected void Application_PostAuthorizeRequest()
+        {
+            if (IsWebApiRequest())
+            {
+                HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required);
+            }
+        }
+
+        private bool IsWebApiRequest()
+        {
+            return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("~/api");
+        }
+
         protected void Application_Start()
         {
             RouteTable.Routes.MapHubs();

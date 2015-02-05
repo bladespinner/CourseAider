@@ -222,7 +222,9 @@ namespace CourseAider.Hubs
             string name = this.Context.User.Identity.Name;
             var context = contexts[name];
 
-            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+            var chanuser = context.ChatClient.LocalUser.GetChannelUsers().FirstOrDefault();
+            if (chanuser == null) return;
+            var channel = chanuser.Channel;
             var users = channel.Users.GetUsers();
          
             Clients.Caller.listUpdate(users.Select(u => u.NickName).Aggregate((a,b) => a + "," + b));

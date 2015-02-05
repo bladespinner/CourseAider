@@ -19,6 +19,7 @@ namespace CourseAider.Models
         public string TwitterAccount { get; set; }
         public virtual Course Course { get; set; }
         public virtual IList<UserProfile> Members { get; set; }
+        public virtual IList<File> Files { get; set; }
         public virtual UserProfile Creator { get; set; }
     }
 }

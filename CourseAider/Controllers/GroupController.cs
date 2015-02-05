@@ -134,6 +134,43 @@ namespace CourseAider.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult UploadFile(int id = 0)
+        {
+            Group group = db.Groups.Find(id);
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewData["groupId"] = id;
+            return PartialView("_FileUpload", new FileUploadModel()
+            {
+                Private = false
+            });
+        }
+        [HttpGet]
+        [ChildActionOnly]
+        public ActionResult ListFiles(int id = 0)
+        {
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                if (profile != null)
+                {
+                    isTeacher = profile.IsTeacher;
+                }
+            }
+            ViewBag.isTeacher = isTeacher;
+            Group group = db.Groups.Find(id);
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_FileList", group.Files.ToList());
+        }
         protected override void Dispose(bool disposing)
         {
             db.Dispose();

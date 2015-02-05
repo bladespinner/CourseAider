@@ -9,6 +9,7 @@ using CourseAider.Models;
 using WebMatrix.WebData;
 using CourseAider.Filters;
 using System.IO;
+using CourseAider.Helpers;
 
 namespace CourseAider.Controllers
 {
@@ -77,21 +78,6 @@ namespace CourseAider.Controllers
             return View();
         }
 
-        private string SaveFile(HttpPostedFileBase file, string type, string id)
-        {
-            string fileName = file.FileName.Split('\\').Last();
-            string filePath = Server.MapPath("~/UserData/" + type + "/" + id);
-            if (!Directory.Exists(filePath))
-            {
-                System.IO.Directory.CreateDirectory(filePath);
-            }
-            var imgPath = filePath + "\\" + fileName;
-            file.SaveAs(imgPath);
-
-            string webPath = "/UserData/" + type + '/' + id + "/" + fileName;
-            return webPath;
-        }
-
         //
         // POST: /Course/Create
         [HttpPost]
@@ -120,7 +106,7 @@ namespace CourseAider.Controllers
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
-                course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());         
+                course.Image = FileHelper.SaveFile(courseModel.Image, "Course", course.Id.ToString());         
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
