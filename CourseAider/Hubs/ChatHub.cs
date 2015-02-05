@@ -15,6 +15,7 @@ namespace CourseAider.Hubs
     public class ChatHub : Hub
     {
         private static Dictionary<string, ChatContext> contexts = new Dictionary<string, ChatContext>();
+        private static Dictionary<string, Question> questions = new Dictionary<string, Question>();
         public override System.Threading.Tasks.Task OnConnected()
         {
             string name = this.Context.User.Identity.Name;
@@ -228,6 +229,45 @@ namespace CourseAider.Hubs
             var users = channel.Users.GetUsers();
          
             Clients.Caller.listUpdate(users.Select(u => u.NickName).Aggregate((a,b) => a + "," + b));
+        }
+
+        public void AskQuestion(string question, int points, int lifetime, string[] answers, int correct)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            Question q = new Question(answers, lifetime, correct);
+            questions.Add(q.Id, q);
+            Clients.Others.askQuestion(question, points, answers, q.ExpirationTime);
+        }
+
+        public void AnswerQuestion(string questionId, int answer)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            questions = questions.Where(q => q.Value.ExpirationTime > DateTime.Now).ToDictionary(a => a.Key, a => a.Value);
+            if(questions.ContainsKey(questionId))
+            {
+                var question = questions[questionId];
+                if(question.Answerers.Contains(this.Context.User.Identity.Name))
+                {
+                    return;
+                }
+                question.Answerers.Add(this.Context.User.Identity.Name);
+                if(answer == question.CorrectAnswer)
+                {
+                    Clients.Caller.notify("You have answered correctly");
+                }
+                else
+                {
+                    Clients.Caller.notify("You have answered incorrectly , the correct answer was '"
+                        + question.Answers[question.CorrectAnswer] + "'.");
+                }
+            }
         }
 
         public void Send(string message)

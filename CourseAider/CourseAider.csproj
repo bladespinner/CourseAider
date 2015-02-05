@@ -219,6 +219,7 @@
     </Compile>
     <Compile Include="Helpers\FileHelper.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
+    <Compile Include="Hubs\Question.cs" />
     <Compile Include="Models\CourseAiderContext.cs" />
     <Compile Include="Models\Course.cs" />
     <Compile Include="Models\CreateCourseModel.cs" />
