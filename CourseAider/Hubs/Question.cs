@@ -7,7 +7,7 @@ namespace CourseAider.Hubs
 {
     public class Question
     {
-        public Question(string[] answers, int lifetime,int correct)
+        public Question(string[] answers, int lifetime,int correct, int points)
         {
             _id = Guid.NewGuid();
             Answerers = new List<string>();
@@ -15,6 +15,13 @@ namespace CourseAider.Hubs
             Answers.AddRange(answers);
             ExpirationTime = DateTime.Now.AddMinutes(lifetime);
             CorrectAnswer = correct;
+            Points = points;
+        }
+
+        public int Points
+        {
+            get;
+            private set;
         }
 
         private Guid _id;

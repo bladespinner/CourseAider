@@ -17,6 +17,7 @@ namespace CourseAider.Models
         public string RealName { get; set; }
         public bool IsTeacher { get; set; }
         public string IrcCredential { get; set; }
+        public int Score { get; set; }
         public virtual IList<Course> Courses { get; set; }
         public virtual IList<Group> Groups { get; set; }
     }
