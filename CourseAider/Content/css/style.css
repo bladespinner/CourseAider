@@ -162,3 +162,7 @@ figure.ca-testimonial span{
 .ca-user-list span:last-of-type:after{
     content:""
 }
+
+.adminChatControl{
+    cursor:pointer
+}

@@ -143,8 +143,38 @@
     <script src="~/signalr/hubs"></script>
     <!--SignalR script to update the chat page and send messages.-->
     <script>
+
+       
         $(function () {
-            var isTeacher = @(ViewBag.isTeacher.ToString().ToLower()) ;
+            var numberOfRecivedMessages = 0;
+            function hideAllMenus(){
+                $('.contextMenuPlugin').remove()
+            }
+            var chatOptionsMenu = {
+                title: 'My Popup Menu',
+                items: [
+                  {label:'Mute',     icon:'/images/Mute.png', action:function(e) { 
+                      
+                      var userName = $(e.target).attr('data-username');
+                      
+                      toggleVoice(userName);
+                      hideAllMenus() } 
+                  },
+                  {label:'Ban', icon:'/images/user_ban.png',    action:function(e) { 
+                      var userName = $(e.target).attr('data-username');
+                      toggleBan(userName);
+                      hideAllMenus() 
+                  } },
+                  {label:'Kick', icon:'/images/footprint.png',    action:function(e) {
+                      var userName = $(e.target).attr('data-username');
+                      kick(userName);
+                      hideAllMenus() 
+                  } },
+                  null, /* null can be used to add a separator to the menu items */
+                  {label:'Close Menu',     icon:'/images/close.png',  action:function() { hideAllMenus() } },
+            ]}
+
+            var isTeacher = @(ViewBag.isTeacher.ToString().ToLower());
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
@@ -160,13 +190,19 @@
                 $('#discussion').append('<div class="text-error"> SERVER : ' + htmlEncode(errorMessage) + '</div>');
             }
             chat.client.message = function (sender, message) {
-                $('#discussion').append('<div class="text-success"><b class="text-warning">' + htmlEncode(sender) + " : </b>" + htmlEncode(message) + '</div>');
+                var senderEscaped =  htmlEncode(sender);
+                $('#discussion').append('<div class="text-success"><b class="text-warning adminChatControl" data-username=' + senderEscaped  + ' id= '+  senderEscaped + '_' + numberOfRecivedMessages + '>' + senderEscaped + " : </b>" + htmlEncode(message) + '</div>');
+                $('#'+senderEscaped + '_' + numberOfRecivedMessages++).contextPopup(chatOptionsMenu);
             }
             chat.client.listUpdate = function (list){
                 $('#user-list').html("");
                 var users = list.split(',');
                 for(var i = 0 ; i < users.length; i++){
-                    $('#user-list').append('<span>'+users[i]+'</span>');
+                    var userInTheChat = '<span class="adminChatControl" data-username=' + users[i] + ' id='+ users[i] +  '>'+users[i]+'</span>'
+                                        
+                    $('#user-list').append(userInTheChat);
+                    
+                    $('#' + users[i]).contextPopup(chatOptionsMenu);
                 }
             }
             // Set initial focus to message input box.
@@ -242,4 +278,5 @@
             return encodedValue;
         }
     </script>
+    
 }
