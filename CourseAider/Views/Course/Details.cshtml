@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "Details";
     CourseAider.Models.Group dummy = new CourseAider.Models.Group();
-    var isMember = Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName);
     var isCreator = Model.Creator.UserName == WebSecurity.CurrentUserName;
     var isOnline = WebSecurity.CurrentUserName != null;
 }
@@ -66,9 +65,11 @@
             using (Html.BeginColumn(12))
             {
                 <h2>Course '@Model.Name' creator is @Model.Creator.RealName</h2>
-                <p>
-                    @Model.Description
-                </p>
+                <div style="background:rgba(77,77,77,0.5);margin:5px;padding:5px;border-radius:5px">
+                    <p>
+                        @Model.Description
+                    </p>
+                </div>
             }
         }
     }
@@ -95,6 +96,7 @@
                     <tbody>
                         @foreach (var item in Model.Groups)
                         {
+                            var isMember = item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName);
                             <tr>
                                 <td>
                                     @if (isMember)
@@ -122,38 +124,28 @@
                                 </td>
                                 <td>
                                     <div class="text-center">
-                                        @if (isMember)
+                                        @if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
+                                            @Html.ActionLink("Edit", "Edit","Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                            @Html.ActionLink("Details", "Details", "Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                            @Html.ActionLink("Delete", "Delete", "Group", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        }
+                                            
+                                        @if (!isMember)
                                         {
-                                            if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
-                                                @Html.ActionLink("Edit", "Edit","Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
-                                                @Html.ActionLink("Details", "Details", "Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
-                                                @Html.ActionLink("Delete", "Delete", "Group", new { id = item.Id }, new { @class = "btn btn-default" })
-                                            }
-                                        
                                             <br />
                                             <br />
-
-                                            if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
+                                            using (Html.BeginForm("Details", "Group", new { id = item.Id }, FormMethod.Post, null))
                                             {
-                                                using (Html.BeginForm("Details", "Group", new { id = item.Id }, FormMethod.Post, null))
-                                                {
-                                                    @Html.AntiForgeryToken();
+                                                @Html.AntiForgeryToken();
 
-                                                    <input type="submit" name="enroll" value="Enroll" 
-                                                           data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
-                                                           class="btn btn-primary requireConfirmation" />
-
-                                                    <div class="display-label">
-                                                         @Html.DisplayNameFor(model => model.Image)
-                                                    </div>
-                                                    <div class="display-field">
-                                                        <img src="@Model.Image" class="pull-right" style="max-height:50px;max-width:70px" />
-                                                    </div>
-                                                    <div class="display-label">
-                                                        Course groups:
-                                                    </div>
-                                                }
+                                                <input type="submit" name="enroll" value="Enroll" 
+                                                        data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                        class="btn btn-primary requireConfirmation" />
                                             }
+                                        }
+                                        else
+                                        {
+                                            <p>You are already enrolled for <b>@item.Name</b></p>
                                         }
                                     </div>
                                 </td>
@@ -165,7 +157,7 @@
             using (Html.BeginColumn(4))
             {
                 <h2>Members</h2>
-                @Html.ActionLink("See your profile","Manage","Accout")
+                @Html.ActionLink("See your profile","Manage","Account")
                 <table class="tablesorter table member">
                     <thead>
                         <tr>

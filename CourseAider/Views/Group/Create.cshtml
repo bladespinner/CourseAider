@@ -4,48 +4,81 @@
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(3))
+            {
+                <div class="text-center">
+                    <h1>Create Group</h1>
+                    <div>
+                        @Html.ActionLink("Back to Course", "Details", "Course", new { id = ViewBag.courseId }, null)
+                    </div>
+                </div>
+            }
+            using (Html.BeginColumn(9))
+            {
+                <p>
+                    <i>
+                        If I am walking with two other men, each of them will serve as my teacher. I will pick out the good points
+                        of the one and imitate them, and the bad points of the other and correct them in myself.
+                    </i>
+                </p>
+                <p class="text-right" style="margin-right:25px"><b>Confucious</b></p>
+            }
+        }
+    }
+</section>
 
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
+<section id="loginForm" class="ca-bg1 text-center">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(6))
+            {
+                using (Html.BeginForm()) 
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true)
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name)
+                        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Name)
+                    </div>
+        
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description)
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Description)
+                    </div>
 
-    <fieldset>
-        <legend>Group</legend>
+                    <div class="form-group">
+                        <label for="IRCChannel">Channel Name</label>
+                        @Html.TextBoxFor(model => model.IRCChannel, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IRCChannel)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.Name)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.Name)
-            @Html.ValidationMessageFor(model => model.Name)
-        </div>
+                    <div class="form-group">
+                        <label for="TwitterAccount">Twitter Widget ID</label>
+                        @Html.TextBoxFor(model => model.TwitterAccount, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TwitterAccount)
+                    </div>
 
-        <div class="editor-label">
-            @Html.LabelFor(model => model.IRCChannel)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.IRCChannel)
-            @Html.ValidationMessageFor(model => model.IRCChannel)
-        </div>
-
-        <div class="editor-label">
-            @Html.LabelFor(model => model.TwitterAccount)
-        </div>
-        <div class="editor-field">
-            @Html.EditorFor(model => model.TwitterAccount)
-            @Html.ValidationMessageFor(model => model.TwitterAccount)
-        </div>
-
-        <p>
-            <input type="submit" value="Create" />
-        </p>
-    </fieldset>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="form-control"/>
+                    </div>
+                }
+            }
+            using (Html.BeginColumn(6))
+            {
+                <img class="ca-wide-image" src="~/Images/crusades.jpg" />
+            }
+        }
+    }
+</section>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

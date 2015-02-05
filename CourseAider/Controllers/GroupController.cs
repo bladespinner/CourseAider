@@ -16,14 +16,6 @@ namespace CourseAider.Controllers
         private CourseAiderContext db = new CourseAiderContext();
 
         //
-        // GET: /Group/
-
-        public ActionResult Index()
-        {
-            return View(db.Groups.ToList());
-        }
-
-        //
         // GET: /Group/Details/5
 
         public ActionResult Details(int id = 0)
@@ -40,6 +32,7 @@ namespace CourseAider.Controllers
                 var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
                 isTeacher = profile.IsTeacher;
             }
+
             ViewBag.isTeacher = isTeacher;
             return View(group);
         }
@@ -69,7 +62,7 @@ namespace CourseAider.Controllers
                 isTeacher = profile.IsTeacher;
             }
             db.SaveChanges();
-            
+
             ViewBag.isTeacher = isTeacher;
             return View(group);
         }
@@ -83,6 +76,7 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.courseId = id;
             return View();
         }
 
@@ -108,7 +102,7 @@ namespace CourseAider.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Details", "Group", new { id = group.Id });
             }
-
+            ViewBag.courseId = id;
             return View(group);
         }
 
@@ -162,9 +156,11 @@ namespace CourseAider.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Group group = db.Groups.Find(id);
+            int parent = group.Course.Id;
+            group.Members.Clear();
             db.Groups.Remove(group);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Course", new { id = parent });
         }
 
         [HttpGet]
@@ -186,6 +182,28 @@ namespace CourseAider.Controllers
         [HttpGet]
         [ChildActionOnly]
         public ActionResult ListFiles(int id = 0)
+        {
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                if (profile != null)
+                {
+                    isTeacher = profile.IsTeacher;
+                }
+            }
+            ViewBag.isTeacher = isTeacher;
+            Group group = db.Groups.Find(id);
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+            return PartialView("_FileList", group.Files.ToList());
+        }
+
+        [HttpPost]
+        [ChildActionOnly]
+        public ActionResult ListFiles(string dummy,int id = 0)
         {
             bool isTeacher = false;
             using (CourseAiderContext context = new CourseAiderContext())

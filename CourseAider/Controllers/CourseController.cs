@@ -139,30 +139,19 @@ namespace CourseAider.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public ActionResult Edit(EditCourseModel courseModel)
+        public ActionResult Edit(EditCourseModel courseModel,int id)
         {
             if (ModelState.IsValid)
             {
-                Course course = new Course();
+                Course course = db.Courses.Find(id);
+                if(course == null)
+                {
+                    return HttpNotFound();
+                }
                 //set creator to current user
-                course.Creator = db.UserProfiles.Find(WebSecurity.CurrentUserId);
-                course.Members = new List<UserProfile>();
-                course.Members.Add(course.Creator);
 
                 course.Description = courseModel.Description;
                 course.Name = courseModel.Name;
-                course.Image = courseModel.Image.FileName;
-
-                course = db.Courses.Add(course);
-                course.DateCreated = DateTime.Now;
-
-                //persist changes and refresh so we get an courseId
-                course.DateCreated = DateTime.Now;
-
-                db.SaveChanges();
-                db.Entry(course).GetDatabaseValues();
-
-                course.Image = FileHelper.SaveFile(courseModel.Image, "Course", course.Id.ToString());
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

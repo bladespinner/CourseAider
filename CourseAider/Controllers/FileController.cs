@@ -69,13 +69,6 @@ namespace CourseAider.Controllers
 
         [System.Web.Mvc.HttpPost]
         [System.Web.Mvc.Authorize]
-        public HttpResponseMessage RateFile(int id)
-        {
-            return null;
-        }
-
-        [System.Web.Mvc.HttpPost]
-        [System.Web.Mvc.Authorize]
         public HttpResponseMessage Post(int id)
         {
             var result = new List<string>();

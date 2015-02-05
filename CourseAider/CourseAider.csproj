@@ -318,11 +318,17 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\connectionStrings.config" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\close.png" />
+    <Content Include="Images\crusades-H.jpeg" />
+    <Content Include="Images\crusades.jpg" />
     <Content Include="Images\crusades.png.jpg" />
     <Content Include="Images\first.png" />
+    <Content Include="Images\footprint.png" />
     <Content Include="Images\last.png" />
+    <Content Include="Images\Mute.png" />
     <Content Include="Images\next.png" />
     <Content Include="Images\prev.png" />
+    <Content Include="Images\user_ban.png" />
     <Content Include="pager\first.png" />
     <Content Include="pager\last.png" />
     <Content Include="pager\next.png" />
@@ -395,7 +401,6 @@
     <Content Include="Views\Course\Create.cshtml" />
     <Content Include="Views\Course\Edit.cshtml" />
     <Content Include="Views\Course\Delete.cshtml" />
-    <Content Include="Views\Group\Index.cshtml" />
     <Content Include="Views\Group\Details.cshtml" />
     <Content Include="Views\Group\Create.cshtml" />
     <Content Include="Views\Group\Edit.cshtml" />
