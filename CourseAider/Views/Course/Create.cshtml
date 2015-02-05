@@ -23,6 +23,14 @@
         </div>
 
         <div class="editor-label">
+            @Html.LabelFor(model => model.Description)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Description)
+            @Html.ValidationMessageFor(model => model.Name)
+        </div>
+        
+        <div class="editor-label">
             @Html.LabelFor(model => model.Image)
         </div>
         <div class="editor-field">
