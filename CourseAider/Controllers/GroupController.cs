@@ -179,6 +179,23 @@ namespace CourseAider.Controllers
                 Private = false
             });
         }
+
+        [HttpPost]
+        [ChildActionOnly]
+        public ActionResult UploadFile(string dummy,int id = 0)
+        {
+            Group group = db.Groups.Find(id);
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewData["groupId"] = id;
+            return PartialView("_FileUpload", new FileUploadModel()
+            {
+                Private = false
+            });
+        }
         [HttpGet]
         [ChildActionOnly]
         public ActionResult ListFiles(int id = 0)

@@ -409,6 +409,8 @@
     <Content Include="Views\Group\Partial\_FileUpload.cshtml" />
     <Content Include="Views\Group\Partial\_FileList.cshtml" />
     <Content Include="Views\Home\Partial\_TopUsers.cshtml" />
+    <Content Include="Views\Account\Partial\_UserCourse.cshtml" />
+    <Content Include="Views\Account\Partial\_UserGroups.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

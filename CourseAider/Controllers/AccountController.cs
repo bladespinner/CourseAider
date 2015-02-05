@@ -344,11 +344,11 @@ namespace CourseAider.Controllers
 
         public ActionResult UserCourses()
         {
-            return PartialView("_UserCourser");
+            return PartialView("_UserCourse");
         }
         public ActionResult UserGroups()
         {
-            return PartialView("_UserCourser");
+            return PartialView("_UserGroups");
         }
 
         #region Helpers
