@@ -9,16 +9,23 @@
 @if(Request.HttpMethod == "POST")
 {
     <div class="well-lg alert-success">
-        <h2>You have successfully enrolled for @Model.Name</h2>
+        <h2>You have successfully enrolled for <b>@Model.Name</b></h2>
     </div>
 }
-else
+else if (!Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
 {
     using(Html.BeginForm("Details","Course",new{ id = Model.Id },FormMethod.Post,null))
     {
         @Html.AntiForgeryToken();
-        <input type="submit" name="enroll" value="Enroll" class="btn btn-primary"/>
+        <input type="submit" name="enroll" value="Enroll" class="btn btn-primary requireConfirmation"
+        data-confirm-msg="You are going to enroll for a the @Model.Name course, this cannot be undone, are you sure?"/>
     }
+}
+else
+{
+    <div class="well-lg alert-info">
+        <h2>You are enrolled for <b>@Model.Name</b></h2>
+    </div>
 }
 
 <fieldset>

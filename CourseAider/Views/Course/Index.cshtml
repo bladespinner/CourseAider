@@ -21,7 +21,13 @@
             }
             using (Html.BeginColumn(9))
             {
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque non leo eleifend ante pellentesque sagittis in vitae sapien. Sed ac eros nec libero elementum euismod. Nullam convallis eros egestas mauris porta, rhoncus eleifend lacus lacinia. Phasellus interdum nulla consectetur dolor auctor, eu pharetra massa mattis. Ut enim nisl, pretium eget ultricies tincidunt, pellentesque ac ipsum. </p>
+                <p>
+                    <i>
+                    If I am walking with two other men, each of them will serve as my teacher. I will pick out the good points
+                    of the one and imitate them, and the bad points of the other and correct them in myself.
+                    </i>
+                </p>
+                <p class="text-right" style="margin-right:25px"><b>Confucious</b></p>
             }
         }
     }
@@ -68,10 +74,21 @@
                                         <br />
                                         <br />
                                         <br />
-                                        @using (Html.BeginForm("Details", "Course", new { id = item.Id }, FormMethod.Post, null))
+                                        @if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
                                         {
-                                            @Html.AntiForgeryToken();
-                                            <input type="submit" name="enroll" value="Enroll" class="btn btn-primary" />
+                                            using (Html.BeginForm("Details", "Course", new { id = item.Id }, FormMethod.Post, null))
+                                            {
+                                                @Html.AntiForgeryToken();
+
+                                                <input type="submit" name="enroll" value="Enroll" 
+                                                       data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                       class="btn btn-primary requireConfirmation" />
+                                            
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p>You are enrolled for <b>@item.Name</b></p>
                                         }
                                     </div>
                                 </td>

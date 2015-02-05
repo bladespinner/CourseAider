@@ -181,6 +181,7 @@ namespace CourseAider.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
+            course.Members.Clear();
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");

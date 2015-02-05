@@ -17,6 +17,11 @@ namespace CourseAider.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Course>()
+                .HasMany<Group>(c => c.Groups)
+                .WithRequired(x => x.Course)
+                .WillCascadeOnDelete(true);
+
             base.OnModelCreating(modelBuilder);
             //this.Database.ExecuteSqlCommand("ALTER TABLE Courses ADD CONSTRAINT uc_Name UNIQUE(Name)");
         }

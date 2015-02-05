@@ -243,6 +243,7 @@
     <Content Include="Content\images\teacher.png" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\script.js" />
     <Content Include="Content\js\setTableSorter.js" />
     <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\npm.js" />
