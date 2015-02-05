@@ -4,37 +4,67 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(3))
+            {
+                <div class="text-center">
+                    <h1>Delete @Model.Name</h1>
+                </div>
+            }
+            using (Html.BeginColumn(9))
+            {
+                <p>
+                    <i>
+                        If I am walking with two other men, each of them will serve as my teacher. I will pick out the good points
+                        of the one and imitate them, and the bad points of the other and correct them in myself.
+                    </i>
+                </p>
+                <p class="text-right" style="margin-right:25px"><b>Confucious</b></p>
+            }
+        }
+    }
+</section>
 
-<h3>Are you sure you want to delete this?</h3>
-<fieldset>
-    <legend>Group</legend>
+<section class="ca-bg2 img" style="background-image: url('/Images/crusades-H.jpeg')"></section>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
+<section class="ca-bg3">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <p>
+                    <i>
+                        When we see persons of worth, we should think of equaling them; when we see persons of a contrary character, we should turn inwards and examine ourselves.
+                    </i>
+                </p>
+                <p class="text-right" style="margin-right:25px"><b>Confucious</b></p>
+            }
+        }
+    }
+</section>
 
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.IRCChannel)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.IRCChannel)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.TwitterAccount)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.TwitterAccount)
-    </div>
-</fieldset>
-@using (Html.BeginForm()) {
-    @Html.AntiForgeryToken()
-    <p>
-        <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
-    </p>
-}
+<section class="ca-bg2">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                using (Html.BeginForm())
+                {
+                    @Html.AntiForgeryToken()
+                    <p>
+                        <input type="submit" value="Delete" class="requireConfirmation btn btn-primary"
+                               data-confirm-msg="This will ireversibly delete the group and all of its files, do you wish to continue?" />
+                    </p>
+                }
+            }
+        }
+    }
+</section>
