@@ -2,9 +2,10 @@
 @{
     ViewBag.Title = "Manage Account";
 }
-
+@Html.Action("UserCourses")
+@Html.Action("UserGroups")
 <hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
+    <h1>@ViewBag.Title</h1>
 </hgroup>
 
 <p class="message-success">@ViewBag.StatusMessage</p>

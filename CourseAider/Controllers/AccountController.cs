@@ -342,6 +342,15 @@ namespace CourseAider.Controllers
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 
+        public ActionResult UserCourses()
+        {
+            return PartialView("_UserCourser");
+        }
+        public ActionResult UserGroups()
+        {
+            return PartialView("_UserCourser");
+        }
+
         #region Helpers
         private ActionResult RedirectToLocal(string returnUrl)
         {
