@@ -175,6 +175,30 @@ namespace CourseAider.Hubs
             };
         }
 
+        public void GetModes(string target)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            var modes = context
+                .ChatClient
+                .LocalUser
+                .GetChannelUsers()
+                .First()
+                .Channel
+                .Users
+                .Where(u => u.User.UserName == target)
+                .Select(u => u.Modes
+                    .Select(m => m.ToString())
+                    .Aggregate((a, b) => a.ToString() + "," + b.ToString()));
+
+            Clients.Caller.userModes(modes, target);
+        }
+
         public void Kick(string user)
         {
             if (!this.Context.User.Identity.IsAuthenticated) return;

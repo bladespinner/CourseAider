@@ -22,6 +22,16 @@ namespace CourseAider.Controllers
 
         public ActionResult Index()
         {
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                if (profile != null)
+                {
+                    isTeacher = profile.IsTeacher;
+                }
+            }
+            ViewBag.isTeacher = isTeacher;
             return View(db.Courses.ToList());
         }
 
@@ -35,6 +45,26 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
+
+            return View(course);
+        }
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(string dummy,int id = 0)
+        { 
+            Course course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            var profile = db.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+            if(!course.Members.Any(member => member.UserName == profile.UserName))
+            {
+                course.Members.Add(profile);
+            }
+            db.SaveChanges();
 
             return View(course);
         }
@@ -77,6 +107,7 @@ namespace CourseAider.Controllers
                 course.Members = new List<UserProfile>();
                 course.Members.Add(course.Creator);
 
+                course.Description = courseModel.Description;
                 course.Name = courseModel.Name;
                 course.Image = courseModel.Image.FileName;
 
@@ -89,9 +120,7 @@ namespace CourseAider.Controllers
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
-                course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
-
-            
+                course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());         
 
                 db.SaveChanges();
                 return RedirectToAction("Index");

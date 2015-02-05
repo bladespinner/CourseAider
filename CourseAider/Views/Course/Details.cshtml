@@ -6,6 +6,21 @@
 
 <h2>Details</h2>
 
+@if(Request.HttpMethod == "POST")
+{
+    <div class="well-lg alert-success">
+        <h2>You have successfully enrolled for @Model.Name</h2>
+    </div>
+}
+else
+{
+    using(Html.BeginForm("Details","Course",new{ id = Model.Id },FormMethod.Post,null))
+    {
+        @Html.AntiForgeryToken();
+        <input type="submit" name="enroll" value="Enroll" class="btn btn-primary"/>
+    }
+}
+
 <fieldset>
     <legend>Course</legend>
 
