@@ -18,7 +18,7 @@
             }
             using (Html.BeginColumn(7))
             {
-                @Html.Partial("_LatestCourses")
+                @Html.Action("LatestCourses", "Home")
             }
         }
     }
