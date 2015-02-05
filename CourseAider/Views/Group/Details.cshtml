@@ -55,7 +55,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
                             <li><a href="javascript:;" id="muteChat">Mute the chat</a></li>
-                            <li><a href="javascript:;" id="askQuestion" data-toggle="modal" data-target="#createQuestion">Ask question</a></li>
+                            <li><a href="javascript:;" id="addQuestion" data-toggle="modal" data-target="#createQuestion">Ask question</a></li>
                             <li class="divider"></li>
                             <li><a href="#">Close this menu</a></li>
                             </ul>
@@ -66,7 +66,10 @@
                             $('#muteChat').click(function(){
                                 toggleChatInSilentMode();
                             });
-                            
+
+                            $('#addQuestion').click(function(){
+                                answerCreator.reset();
+                            });
 
                         </script>
                     </div><!-- /.navbar-collapse -->
@@ -146,7 +149,15 @@
                                     <textarea rows="4" cols="50" id="questionContent">
 
                                     </textarea>
-                                </div>  
+                                </div>
+                                <strong>Insert Points for correct answer</strong>
+                                <div>
+                                    <input type="number" id="pointsNumber" min="0"/>
+                                </div>
+                                <strong>Insert Lifetime for the question(in minitues)</strong>
+                                <div>
+                                    <input type="number" id="lifetime" min="1"/>
+                                </div> 
                             }
                             
                         }
@@ -173,20 +184,50 @@
                                             this.numberOfAnswers = 0;
                                             this.addAnswer = function(){
                                                 var answerRow = '<div style="margin-top:15px" id="answer_' + self.numberOfAnswers +  '">' + 
-                                                            '<input type="checkbox" class='+ self.numberOfAnswers + ' id="right" />'+
+                                                            '<input type="checkbox" class="isAnswer" data-pos='+ self.numberOfAnswers + ' id="right" />'+
                                                             '<input type="text" id="answerContent_'+ self.numberOfAnswers + '" />'+
                                                             '<button class="btn" id="remove_'+ self.numberOfAnswers + '" style="margin-left:5px"> Remove </button>' + 
-                                                            '</div>'
+                                                            '</div>';
                                                 $('#answers').append(answerRow);
                                                 $('#remove_' + self.numberOfAnswers).click(function(){
                                                    $(this).parent().remove();
                                                 });
                                                 self.numberOfAnswers++;
+                                                
+                                            }
+                                            this.reset = function(){
+                                                $('#questionContent').val('');
+                                                $('#answers').html('');
+                                                $('#pointsNumber').val('');
+                                                self.numberOfAnswers = 0;
+                                            }
+
+                                            this.submitQuestion = function(){
+                                                var points = $('#pointsNumber').val();
+                                                var question = $('#questionContent').val();
+                                                var lifetime = $('#lifetime').val();
+                                                var answers = [];
+                                                
+                                                var i = 0;
+                                                while(i < self.numberOfAnswers){
+                                                    answers.push($('#answerContent_'+ i).val());
+                                                    i++;
+                                                }
+
+                                                var correctAnswer = $('.isAnswer').filter(':checked').first().attr('data-pos');
+                                                
+                                                console.log(question, points, lifetime, answers, correctAnswer)
+                                                var chat = $.connection.chatHub;
+                                                chat.server.askQuestion(question, points, lifetime, answers, correctAnswer)
+                                                
+
                                             }
                                         });
+                                        
                                         $('#createAnswer').click(function(){
                                             answerCreator.addAnswer();
                                         });
+                                        
 
                                         
                                     </script>
@@ -199,8 +240,16 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" id="closeTab">Close</button>
+                <button type="button" class="btn btn-primary" id="ask">Ask Question</button>
+                <script>
+                    
+                    $('#ask').click(function(){
+                        
+                        answerCreator.submitQuestion();
+                        $('#closeTab').click();
+                    });
+                </script>
             </div>
         </div>
     </div>
@@ -257,6 +306,10 @@
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
+            chat.client.askQuestion = function(questionId, points, answers, ExpirationTime){
+                console.log(questionId, points,answers, ExpirationTime );
+            }
+
             chat.client.addNewMessageToPage = function (name, message, type) {
                 // Add the message to the page.
                 $('#discussion').append('<li><strong>' + htmlEncode(name)
