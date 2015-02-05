@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Index";
+    var isOnline = WebSecurity.CurrentUserName != null;
 }
 
 <section class="ca-bg1">
@@ -66,31 +67,38 @@
                                 </td>
                                 <td>
                                     <div class="text-center">
-                                        @if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
-                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default" }) 
-                                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) 
-                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
-                                        }
+                                        @if (isOnline)
+                                        { 
+                                            if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
+                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
+                                            }
                                         
-                                        <br />
-                                        <br />
-                                        <br />
+                                            <br />
+                                            <br />
+                                            <br />
 
-                                        @if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
-                                        {
-                                            using (Html.BeginForm("Details", "Course", new { id = item.Id }, FormMethod.Post, null))
+                                            if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
                                             {
-                                                @Html.AntiForgeryToken();
+                                                using (Html.BeginForm("Details", "Course", new { id = item.Id }, FormMethod.Post, null))
+                                                {
+                                                    @Html.AntiForgeryToken();
 
-                                                <input type="submit" name="enroll" value="Enroll" 
-                                                       data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
-                                                       class="btn btn-primary requireConfirmation" />
+                                                    <input type="submit" name="enroll" value="Enroll" 
+                                                           data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                           class="btn btn-primary requireConfirmation" />
                                             
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p>You are enrolled for <b>@item.Name</b></p>
                                             }
                                         }
                                         else
                                         {
-                                            <p>You are enrolled for <b>@item.Name</b></p>
+                                            <p>You need to login before you can enroll for <b>@item.Name</b></p>
                                         }
                                     </div>
                                 </td>

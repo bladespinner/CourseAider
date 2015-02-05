@@ -222,6 +222,7 @@
     <Compile Include="Hubs\Question.cs" />
     <Compile Include="Models\CourseAiderContext.cs" />
     <Compile Include="Models\Course.cs" />
+    <Compile Include="Models\EditCourseModel.cs" />
     <Compile Include="Models\CreateCourseModel.cs" />
     <Compile Include="Models\ExternalLogin.cs" />
     <Compile Include="Models\File.cs" />
@@ -317,6 +318,7 @@
     <Content Include="Content\fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="App_Config\connectionStrings.config" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
+    <Content Include="Images\crusades.png.jpg" />
     <Content Include="Images\first.png" />
     <Content Include="Images\last.png" />
     <Content Include="Images\next.png" />

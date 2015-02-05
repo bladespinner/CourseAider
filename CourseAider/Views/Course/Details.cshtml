@@ -2,60 +2,191 @@
 
 @{
     ViewBag.Title = "Details";
+    CourseAider.Models.Group dummy = new CourseAider.Models.Group();
+    var isMember = Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName);
+    var isCreator = Model.Creator.UserName == WebSecurity.CurrentUserName;
+    var isOnline = WebSecurity.CurrentUserName != null;
 }
 
-<h2>Details</h2>
-
-@if(Request.HttpMethod == "POST")
-{
-    <div class="well-lg alert-success">
-        <h2>You have successfully enrolled for <b>@Model.Name</b></h2>
-    </div>
-}
-else if (!Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
-{
-    using(Html.BeginForm("Details","Course",new{ id = Model.Id },FormMethod.Post,null))
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
     {
-        @Html.AntiForgeryToken();
-        <input type="submit" name="enroll" value="Enroll" class="btn btn-primary requireConfirmation"
-        data-confirm-msg="You are going to enroll for a the @Model.Name course, this cannot be undone, are you sure?"/>
-    }
-}
-else
-{
-    <div class="well-lg alert-info">
-        <h2>You are enrolled for <b>@Model.Name</b></h2>
-    </div>
-}
-
-<fieldset>
-    <legend>Course</legend>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Name)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Name)
-    </div>
-
-    <div class="display-label">
-         @Html.DisplayNameFor(model => model.Image)
-    </div>
-    <div class="display-field">
-        @Html.DisplayFor(model => model.Image)
-    </div>
-    <div class="display-label">
-        Course groups:
-    </div>
-    <div class="display-field">
-        @foreach (var item in Model.Groups)
+        using (Html.BeginRow())
         {
-        <a href="/group/details/@item.Id">@item.Name</a>
+            using (Html.BeginColumn(3))
+            {
+                <div class="text-center">
+                    <h1>@Model.Name</h1>
+                    <div>
+                        @Html.ActionLink("Back to All Courses", "Index") 
+                        @if(isCreator)
+                        {
+                            <text>|</text>
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.Id })
+                        }
+                    </div>
+                </div>
+            }
+            using (Html.BeginColumn(9))
+            {
+                if (isOnline)
+                { 
+                    if(Request.HttpMethod == "POST")
+                    {
+                        <div class="well-sm alert-success">
+                            <h2>You have successfully enrolled for <b>@Model.Name</b></h2>
+                        </div>
+                    }
+                    else if (!Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
+                    {
+                        using(Html.BeginForm("Details","Course",new{ id = Model.Id },FormMethod.Post,null))
+                        {
+                            @Html.AntiForgeryToken();
+                            <input type="submit" name="enroll" value="Enroll" class="btn btn-primary requireConfirmation"
+                            data-confirm-msg="You are going to enroll for a the @Model.Name course, this cannot be undone, are you sure?"/>
+                        }
+                    }
+                    else
+                    {
+                        <div class="well-sm alert-info">
+                            <h2>You are enrolled for <b>@Model.Name</b></h2>
+                        </div>
+                    }
+                }
+            }
         }
-    </div>
-</fieldset>
-<p>
-    @Html.ActionLink("Add", "Create", "Group", new { id=Model.Id } , null) |
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    }
+</section>
+
+<section class="ca-bg3 img" style="background-image: url('@Model.Image');">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <h2>Course '@Model.Name' creator is @Model.Creator.RealName</h2>
+                <p>
+                    @Model.Description
+                </p>
+            }
+        }
+    }
+</section>
+
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(8))
+            {
+                <h2>Groups</h2>
+                @Html.ActionLink("Create new group", "Create", "Group", new { id = Model.Id }, null)
+                <table class="tablesorter table group">
+                    <thead>
+                        <tr>
+                            <th>
+                                Group
+                            </th>
+                            <th data-sorter="false">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Groups)
+                        {
+                            <tr>
+                                <td>
+                                    @if (isMember)
+                                    {
+                                        <a href="~/group/details/@item.Id" class="ca-course-item">
+                                            <div class="inner">
+                                                <h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </p>
+                                            </div>
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <a class="ca-course-item">
+                                            <div class="inner">
+                                                <h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+                                                <p>
+                                                    @Html.DisplayFor(modelItem => item.Description)
+                                                </p>
+                                            </div>
+                                        </a>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="text-center">
+                                        @if (isMember)
+                                        {
+                                            if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
+                                                @Html.ActionLink("Edit", "Edit","Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                                @Html.ActionLink("Details", "Details", "Group", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                                @Html.ActionLink("Delete", "Delete", "Group", new { id = item.Id }, new { @class = "btn btn-default" })
+                                            }
+                                        
+                                            <br />
+                                            <br />
+
+                                            if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
+                                            {
+                                                using (Html.BeginForm("Details", "Group", new { id = item.Id }, FormMethod.Post, null))
+                                                {
+                                                    @Html.AntiForgeryToken();
+
+                                                    <input type="submit" name="enroll" value="Enroll" 
+                                                           data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                           class="btn btn-primary requireConfirmation" />
+                                            
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p>You are enrolled for <b>@item.Name</b></p>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p>You need to enroll for the <b>@Model.Name</b> course before you can enroll for <b>@item.Name</b></p>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            using (Html.BeginColumn(4))
+            {
+                <h2>Members</h2>
+                @Html.ActionLink("See your profile","Manage","Accout")
+                <table class="tablesorter table member">
+                    <thead>
+                        <tr>
+                            <th>
+                                Member
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Members.OrderBy(m => m.Score))
+                        {
+                            <tr>
+                                <td>
+                                    <div style="text-align: center;font-family: 'Century Gothic';">
+                                        <h2>@item.UserName - @item.Score - @item.RealName</h2>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+    }
+</section>

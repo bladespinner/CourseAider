@@ -19,7 +19,12 @@ h3{
     margin:0;
     font-size:1.1em;
 }
-
+section.img{
+    background-size:100%;
+    background-repeat: no-repeat;
+    background-position:0 0;
+    min-height:200px;
+}
 .btn-primary
 {
     background:#b10d0d;
@@ -202,6 +207,9 @@ figure.ca-testimonial span{
 .tablesorter.course th:first-of-type{
     width:75%;
 }
+.tablesorter.group th:first-of-type{
+    width:60%;
+}
 .ca-course-item {
     display:block;
     background-size:100%;
@@ -221,4 +229,7 @@ figure.ca-testimonial span{
     background:rgba(77,77,77,0.8);
     border-radius:5px;
     padding:10px;
+}
+.ca-wide-image {
+    width:100%;
 }

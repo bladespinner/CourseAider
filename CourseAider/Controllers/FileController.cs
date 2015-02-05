@@ -1,22 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
 using CourseAider.Models;
 using WebMatrix.WebData;
-using CourseAider.Helpers;
-using System.Threading.Tasks;
 using System.Web.Mvc;
-using System.Collections.ObjectModel;
 using System.IO;
-using System.Net.Http.Headers;
-using CourseAider.DataStreamFormatters;
 
 namespace CourseAider.Controllers
 {
@@ -72,6 +65,13 @@ namespace CourseAider.Controllers
             }
 
             return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
+        [System.Web.Mvc.HttpPost]
+        [System.Web.Mvc.Authorize]
+        public HttpResponseMessage RateFile(int id)
+        {
+            return null;
         }
 
         [System.Web.Mvc.HttpPost]

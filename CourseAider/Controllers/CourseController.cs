@@ -125,7 +125,12 @@ namespace CourseAider.Controllers
             {
                 return HttpNotFound();
             }
-            return View(course);
+            return View(new EditCourseModel()
+            {
+                Description = course.Description,
+                Name = course.Name,
+                ImagePath = course.Image
+            });
         }
 
         //
@@ -134,15 +139,36 @@ namespace CourseAider.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Teacher")]
-        public ActionResult Edit(Course course)
+        public ActionResult Edit(EditCourseModel courseModel)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(course).State = EntityState.Modified;
+                Course course = new Course();
+                //set creator to current user
+                course.Creator = db.UserProfiles.Find(WebSecurity.CurrentUserId);
+                course.Members = new List<UserProfile>();
+                course.Members.Add(course.Creator);
+
+                course.Description = courseModel.Description;
+                course.Name = courseModel.Name;
+                course.Image = courseModel.Image.FileName;
+
+                course = db.Courses.Add(course);
+                course.DateCreated = DateTime.Now;
+
+                //persist changes and refresh so we get an courseId
+                course.DateCreated = DateTime.Now;
+
+                db.SaveChanges();
+                db.Entry(course).GetDatabaseValues();
+
+                course.Image = FileHelper.SaveFile(courseModel.Image, "Course", course.Id.ToString());
+
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(course);
+
+            return View(courseModel);
         }
 
         //

@@ -44,6 +44,36 @@ namespace CourseAider.Controllers
             return View(group);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(string dummy,int id = 0)
+        {
+            Group group = db.Groups.Find(id);
+           
+            bool isTeacher = false;
+
+            if (group == null)
+            {
+                return HttpNotFound();
+            }
+
+            var profile = db.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+
+            if (!group.Course.Members.Any(member => member.UserName == profile.UserName))
+            {
+                return new HttpUnauthorizedResult("You are not enrolled for this group's course");
+            }
+            if (!group.Members.Any(member => member.UserName == profile.UserName))
+            {
+                group.Members.Add(profile);
+                isTeacher = profile.IsTeacher;
+            }
+            db.SaveChanges();
+            
+            ViewBag.isTeacher = isTeacher;
+            return View(group);
+        }
+
         //
         // GET: /Group/Create
 
@@ -71,6 +101,9 @@ namespace CourseAider.Controllers
                     return HttpNotFound();
                 }
                 group.Course = course;
+                group.Creator = db.UserProfiles.FirstOrDefault(user => user.UserName == WebSecurity.CurrentUserName);
+                group.Members = new List<UserProfile>();
+                group.Members.Add(group.Creator);
                 db.Groups.Add(group);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Group", new { id = group.Id });

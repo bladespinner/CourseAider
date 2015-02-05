@@ -22,6 +22,11 @@ namespace CourseAider.Models
                 .WithRequired(x => x.Course)
                 .WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<Group>()
+                .HasMany<File>(c => c.Files)
+                .WithRequired(x => x.Group)
+                .WillCascadeOnDelete(true);
+
             base.OnModelCreating(modelBuilder);
             //this.Database.ExecuteSqlCommand("ALTER TABLE Courses ADD CONSTRAINT uc_Name UNIQUE(Name)");
         }

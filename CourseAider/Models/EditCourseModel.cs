@@ -7,7 +7,7 @@ using System.Web;
 
 namespace CourseAider.Models
 {
-    public class CreateCourseModel
+    public class EditCourseModel
     {
         [Required]
         [StringLength(100)]
@@ -17,6 +17,8 @@ namespace CourseAider.Models
             FileTypes = new[] { "gif", "jpg", "jpeg", "png", "bmp", "tiff", "webm" }
         )]
         public HttpPostedFileBase Image { get; set; }
+
+        public string ImagePath { get; set; }
 
         public string Description { get; set; }
     }
