@@ -8,6 +8,8 @@ using IrcDotNet;
 using System.Configuration;
 using CourseAider.Chat;
 using CourseAider.Models;
+using System.Reflection;
+using System.ComponentModel;
 
 namespace CourseAider.Hubs
 {
@@ -156,24 +158,40 @@ namespace CourseAider.Hubs
             if (!context.IsTeacher) return;
 
             var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
-            var modes = channel.Modes.ToList();
+
             string setting;
-            if(modes.Contains(mode[0]))
+            if(String.IsNullOrEmpty(targets))
             {
-                modes.Remove(mode[0]);
-                channel.SetModes(modes.ToArray());
-                setting = "off";
+                var modes = channel.Modes.ToList();
+                if (modes.Contains(mode[0]))
+                {
+                    modes.Remove(mode[0]);
+                    channel.SetModes(modes.ToArray());
+                    setting = "off";
+                }
+                else
+                {
+                    channel.SetModes("+" + mode, targets.Split(',').Select(a => a.Trim()));
+                    setting = "on";
+                }
             }
             else
             {
-                channel.SetModes("+"+modes[0],targets.Split(',').Select(a => a.Trim()));
-                setting = "on";
+                var usr = channel.Users.Where(user => user.User.NickName == targets).FirstOrDefault();
+                if (usr.Modes.Contains(mode[0]))
+                {
+                    var usrModes = usr.Modes.Contains(mode[0]);
+                    channel.SetModes("-" + mode, targets.Split(',').Select(a => a.Trim()));
+                    setting = "off";
+                }
+                else
+                {
+                    channel.SetModes("+" + mode, targets.Split(',').Select(a => a.Trim()));
+                    setting = "on";
+                }
             }
 
-            channel.ModesChanged += (object sender, EventArgs a) =>
-            {
-                Clients.All.notify(String.Format(message,setting));
-            };
+            Clients.All.notify(String.Format(message, setting));
         }
 
         public void GetModes(string target)
@@ -221,6 +239,7 @@ namespace CourseAider.Hubs
             if (!this.Context.User.Identity.IsAuthenticated) return;
 
             string name = this.Context.User.Identity.Name;
+            if (!contexts.ContainsKey(name)) return;
             var context = contexts[name];
 
             var chanuser = context.ChatClient.LocalUser.GetChannelUsers().FirstOrDefault();

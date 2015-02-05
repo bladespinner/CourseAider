@@ -77,6 +77,7 @@ namespace CourseAider.Controllers
             for (int i = 0; i < files.Count; i++)
             {
                 var file = db.Files.Create();
+                file.Score = 0;
                 var group = db.Groups.Find(id);
                 if (group == null)
                 {

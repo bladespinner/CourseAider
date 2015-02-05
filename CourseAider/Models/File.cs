@@ -18,5 +18,6 @@ namespace CourseAider.Models
         public string Path { get; set; }
         public virtual Group Group { get; set; }
         public virtual UserProfile Uploader { get; set; }
+        public int Score { get; set; }
     }
 }
