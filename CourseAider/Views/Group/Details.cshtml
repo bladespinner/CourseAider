@@ -50,18 +50,25 @@
                             <button type="button" id="sendmessage" class="btn btn-default">Submit</button>
                         </div>
                         <ul class="nav navbar-nav navbar-right">
-                        <li><a id="powerlevel">OP</a></li>
+                        <li><a id="powerlevel" style="cursor:pointer">OP</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
                             <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a href="javascript:;" id="muteChat">Mute the chat</a></li>
+                            <li><a href="javascript:;" id="askQuestion" data-toggle="modal" data-target="#createQuestion">Ask question</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            <li><a href="#">Close this menu</a></li>
                             </ul>
                         </li>
+                           
                         </ul>
+                        <script>
+                            $('#muteChat').click(function(){
+                                toggleChatInSilentMode();
+                            });
+                            
+
+                        </script>
                     </div><!-- /.navbar-collapse -->
                     </div><!-- /.container-fluid -->
                 </nav>
@@ -118,32 +125,91 @@
     }
 </section>
 
-<!-- Button trigger modal -->
-@*
-        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-            Launch demo modal
-        </button>
+<div class="modal fade" id="createQuestion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Create question</h4>
+            </div>
+            <div class="modal-body">
+                <section class="ca-bg1">
+                    
+                    @using (Html.BeginContainer())
+                    {
+                        using (Html.BeginRow())
+                        {
+                            using (Html.BeginColumn(7))
+                            {
+                                <strong>Insert question</strong>
+                                <div >
+                                    <textarea rows="4" cols="50" id="questionContent">
 
+                                    </textarea>
+                                </div>  
+                            }
+                            
+                        }
+                    }
+                </section>
+                <section class="ca-bg1">
 
-    <!-- Modal -->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-                </div>
-                <div class="modal-body">
-                    ...
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
+                    @using (Html.BeginContainer())
+                    {
+                        using (Html.BeginRow())
+                        {
+                            using (Html.BeginColumn(7))
+                            {
+                                <strong>Click the checkbox before every correct answer</strong>
+                                <div>
+                                    <button class="btn" id="createAnswer">Create Answer</button>
+                                </div>
+                                <div id="answers">
+                                    
+                                    <script>
+                                        var answerCreator =  new (function(){
+                                            var self = this;
+                                            
+                                            this.numberOfAnswers = 0;
+                                            this.addAnswer = function(){
+                                                var answerRow = '<div style="margin-top:15px" id="answer_' + self.numberOfAnswers +  '">' + 
+                                                            '<input type="checkbox" class='+ self.numberOfAnswers + ' id="right" />'+
+                                                            '<input type="text" id="answerContent_'+ self.numberOfAnswers + '" />'+
+                                                            '<button class="btn" id="remove_'+ self.numberOfAnswers + '" style="margin-left:5px"> Remove </button>' + 
+                                                            '</div>'
+                                                $('#answers').append(answerRow);
+                                                $('#remove_' + self.numberOfAnswers).click(function(){
+                                                   $(this).parent().remove();
+                                                });
+                                                self.numberOfAnswers++;
+                                            }
+                                        });
+                                        $('#createAnswer').click(function(){
+                                            answerCreator.addAnswer();
+                                        });
+
+                                        
+                                    </script>
+                                </div>
+                            }
+
+                        }
+                    }
+                </section>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
-*@
+</div>
+
+
+
+    
+
 @section scripts {
     
     <script src="~/Scripts/jquery.validate.min.js"></script>
