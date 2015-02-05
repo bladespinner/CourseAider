@@ -240,7 +240,7 @@ namespace CourseAider.Hubs
 
             if (!context.IsTeacher) return;
 
-            Question q = new Question(answers, lifetime, correct);
+            Question q = new Question(answers, lifetime, correct, points);
             questions.Add(q.Id, q);
             Clients.Others.askQuestion(question, points, answers, q.ExpirationTime);
         }
@@ -260,6 +260,13 @@ namespace CourseAider.Hubs
                 question.Answerers.Add(this.Context.User.Identity.Name);
                 if(answer == question.CorrectAnswer)
                 {
+                    using(var db = new CourseAiderContext())
+                    {
+                        var user = db.UserProfiles.FirstOrDefault(a => a.UserName == this.Context.User.Identity.Name);
+                        if (user == null) return;
+                        user.Score += question.Points;
+                        db.SaveChanges();
+                    }
                     Clients.Caller.notify("You have answered correctly");
                 }
                 else
