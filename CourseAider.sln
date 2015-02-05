@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseAider", "CourseAider\CourseAider.csproj", "{2734D334-BB7B-4646-AEC8-6FF70D608FC4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseAider.Domain", "CourseAider.Domain\CourseAider.Domain.csproj", "{6B296B5D-2CDD-4BF9-AA58-23843AB9B347}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CourseAider.Presentation", "CourseAider.Presentation\CourseAider.Presentation.csproj", "{E20F1176-A9C0-4489-915F-1FEE92A224AC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2F3D989D-088E-40E3-ABB7-B60348AC9FF5}"
@@ -26,10 +24,6 @@ Global
 		{2734D334-BB7B-4646-AEC8-6FF70D608FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2734D334-BB7B-4646-AEC8-6FF70D608FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2734D334-BB7B-4646-AEC8-6FF70D608FC4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6B296B5D-2CDD-4BF9-AA58-23843AB9B347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6B296B5D-2CDD-4BF9-AA58-23843AB9B347}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6B296B5D-2CDD-4BF9-AA58-23843AB9B347}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6B296B5D-2CDD-4BF9-AA58-23843AB9B347}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E20F1176-A9C0-4489-915F-1FEE92A224AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E20F1176-A9C0-4489-915F-1FEE92A224AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E20F1176-A9C0-4489-915F-1FEE92A224AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
