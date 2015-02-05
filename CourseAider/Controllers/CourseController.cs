@@ -9,6 +9,7 @@ using CourseAider.Models;
 using WebMatrix.WebData;
 using CourseAider.Filters;
 using System.IO;
+using CourseAider.Helpers;
 
 namespace CourseAider.Controllers
 {
@@ -22,6 +23,16 @@ namespace CourseAider.Controllers
 
         public ActionResult Index()
         {
+            bool isTeacher = false;
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var profile = context.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+                if (profile != null)
+                {
+                    isTeacher = profile.IsTeacher;
+                }
+            }
+            ViewBag.isTeacher = isTeacher;
             return View(db.Courses.ToList());
         }
 
@@ -39,27 +50,32 @@ namespace CourseAider.Controllers
             return View(course);
         }
 
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public ActionResult Details(string dummy,int id = 0)
+        { 
+            Course course = db.Courses.Find(id);
+            if (course == null)
+            {
+                return HttpNotFound();
+            }
+            var profile = db.UserProfiles.FirstOrDefault(p => p.UserName == WebSecurity.CurrentUserName);
+            if(!course.Members.Any(member => member.UserName == profile.UserName))
+            {
+                course.Members.Add(profile);
+            }
+            db.SaveChanges();
+
+            return View(course);
+        }
+
         //
         // GET: /Course/Create
         [Authorize(Roles="Teacher")]
         public ActionResult Create()
         {
             return View();
-        }
-
-        private string SaveFile(HttpPostedFileBase file, string type, string id)
-        {
-            string fileName = file.FileName.Split('\\').Last();
-            string filePath = Server.MapPath("~/UserData/" + type + "/" + id);
-            if (!Directory.Exists(filePath))
-            {
-                System.IO.Directory.CreateDirectory(filePath);
-            }
-            var imgPath = filePath + "\\" + fileName;
-            file.SaveAs(imgPath);
-
-            string webPath = "/UserData/" + type + '/' + id + "/" + fileName;
-            return webPath;
         }
 
         //
@@ -77,6 +93,7 @@ namespace CourseAider.Controllers
                 course.Members = new List<UserProfile>();
                 course.Members.Add(course.Creator);
 
+                course.Description = courseModel.Description;
                 course.Name = courseModel.Name;
                 course.Image = courseModel.Image.FileName;
 
@@ -89,9 +106,7 @@ namespace CourseAider.Controllers
                 db.SaveChanges();
                 db.Entry(course).GetDatabaseValues();
 
-                course.Image = SaveFile(courseModel.Image, "Course", course.Id.ToString());
-
-            
+                course.Image = FileHelper.SaveFile(courseModel.Image, "Course", course.Id.ToString());         
 
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -152,6 +167,7 @@ namespace CourseAider.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Course course = db.Courses.Find(id);
+            course.Members.Clear();
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("Index");

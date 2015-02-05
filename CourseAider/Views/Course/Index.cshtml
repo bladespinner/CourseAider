@@ -4,60 +4,120 @@
     ViewBag.Title = "Index";
 }
 
-<h1 class="text-center"><strong> All Courses </strong></h1>
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(3))
+            {
+                <div class="text-center">
+                    <h1>All Courses</h1>
+                    @if (ViewBag.isTeacher)
+                    {
+                        @Html.ActionLink("Create New", "Create", new { }, new { @class = "btn btn-default" })
+                    }
+                </div>
+            }
+            using (Html.BeginColumn(9))
+            {
+                <p>
+                    <i>
+                    If I am walking with two other men, each of them will serve as my teacher. I will pick out the good points
+                    of the one and imitate them, and the bad points of the other and correct them in myself.
+                    </i>
+                </p>
+                <p class="text-right" style="margin-right:25px"><b>Confucious</b></p>
+            }
+        }
+    }
+</section>
 
-<div class="text-center">
-    @Html.ActionLink("Create New", "Create", new { }, new { @class = "text-center btn btn-default" })
-</div>
-<div class="row">
-    <div class="col-lg-9 col-md-offset-2">
-        <table class="tablesorter">
-            <thead>
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th data-sorter="false"> Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>
+<section class="ca-bg4">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <table class="tablesorter table course">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th data-sorter="false">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="~/course/details/@item.Id" style="background-image:url('@item.Image');" class="ca-course-item">
+                                        <div class="inner">
+                                            <h2>@Html.DisplayFor(modelItem => item.Name)</h2>
+                                            <p>
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </p>
+                                        </div>
+                                        
+                                    </a>
+                                </td>
+                                <td>
+                                    <div class="text-center">
+                                        @if (item.Creator.UserName == WebSecurity.CurrentUserName) { 
+                                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) 
+                                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        }
+                                        
+                                        <br />
+                                        <br />
+                                        <br />
 
-                            @Html.DisplayFor(modelItem => item.Name)
-                            <img src="@item.Image" class="pull-right" style="max-height:50px;max-width:70px" />
-                        </td>
-                        <td>
-                            <div class="text-center">
-                                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-default" }) |
-                                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-default" }) |
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-default" })
+                                        @if (!item.Members.Any(member => member.UserName == WebSecurity.CurrentUserName))
+                                        {
+                                            using (Html.BeginForm("Details", "Course", new { id = item.Id }, FormMethod.Post, null))
+                                            {
+                                                @Html.AntiForgeryToken();
 
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-            <div class="pager">
-                Page: <select class="gotoPage"></select>
-                <img src="~/images/first.png" class="first disabled" alt="First" title="First page" />
-                <img src="/images/prev.png" class="prev disabled" alt="Prev" title="Previous page" />
+                                                <input type="submit" name="enroll" value="Enroll" 
+                                                       data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                       class="btn btn-primary requireConfirmation" />
+                                            
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <p>You are enrolled for <b>@item.Name</b></p>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                
+                <div class="pager">
+                    Page: <select class="gotoPage"></select>
+                    <img src="~/images/first.png" class="first disabled" alt="First" title="First page" />
+                    <img src="/images/prev.png" class="prev disabled" alt="Prev" title="Previous page" />
 
-                <span class="pagedisplay"></span> 
+                    <span class="pagedisplay"></span> 
 
-                <img src="/images/next.png" class="next" alt="Next" title="Next page" />
-                <img src="/images/last.png" class="last" alt="Last" title="Last page" .>
-                <select class="pagesize">
-                    <option selected="selected" value="10">10</option>
-                    <option value="20">20</option>
-                    <option value="30">30</option>
-                    <option value="40">40</option>
-                </select>
-            </div>
-    </div>
-</div>
+                    <img src="/images/next.png" class="next" alt="Next" title="Next page" />
+                    <img src="/images/last.png" class="last" alt="Last" title="Last page" .>
+                    <select class="pagesize">
+                        <option selected="selected" value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                        <option value="40">40</option>
+                    </select>
+                </div>
+            }
+        }
+    }
+</section>
     
 

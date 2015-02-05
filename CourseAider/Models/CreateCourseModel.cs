@@ -18,5 +18,7 @@ namespace CourseAider.Models
             FileTypes = new[] { "gif", "jpg", "jpeg", "png", "bmp", "tiff", "webm" }
         )]
         public HttpPostedFileBase Image { get; set; }
+
+        public string Description { get; set; }
     }
 }

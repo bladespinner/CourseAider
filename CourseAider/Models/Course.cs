@@ -14,6 +14,7 @@ namespace CourseAider.Models
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public string Description { get; set; }
         public string Image { get; set; }
         public DateTime DateCreated { get; set; }
         public virtual IList<Group> Groups { get; set; }

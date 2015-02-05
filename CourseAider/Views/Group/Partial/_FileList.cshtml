@@ -1,0 +1,29 @@
+﻿@model List<CourseAider.Models.File>
+
+@foreach (var file in Model)
+{
+    if (ViewBag.isTeacher || file.Visibility)
+    {
+        <tr>
+            <td>@file.Name</td>
+            @if(file.Uploader.UserName == WebSecurity.CurrentUserName)
+            {
+                <td><i>You</i></td>
+            }
+            else
+            {
+                <td>@file.Uploader.UserName</td>
+            }
+        
+            @if (file.Visibility)
+            {
+                <td>Public</td>
+            }
+            else
+            {
+                <td>Private</td>
+            }
+            <td><a href="@file.Path">Download</a></td>
+        </tr>
+    }
+}

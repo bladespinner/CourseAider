@@ -83,7 +83,8 @@ namespace CourseAider.Controllers
                     {
                         IsTeacher = model.IsTeacher,
                         IrcCredential = Guid.NewGuid().ToString(),
-                        RealName = model.RealName
+                        RealName = model.RealName,
+                        Score = 0
                     });
                     WebSecurity.Login(model.UserName, model.Password);
                     if (model.IsTeacher)

@@ -27,7 +27,8 @@
 @using (Html.BeginForm()) {
     @Html.AntiForgeryToken()
     <p>
-        <input type="submit" value="Delete" /> |
+        <input type="submit" value="Delete" class="requireConfirmation btn btn-primary" 
+               data-confirm-msg="This will ireversibly delete the course and all of its groups, do you wish to continue?" /> |
         @Html.ActionLink("Back to List", "Index")
     </p>
 }

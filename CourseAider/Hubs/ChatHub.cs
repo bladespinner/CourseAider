@@ -15,6 +15,7 @@ namespace CourseAider.Hubs
     public class ChatHub : Hub
     {
         private static Dictionary<string, ChatContext> contexts = new Dictionary<string, ChatContext>();
+        private static Dictionary<string, Question> questions = new Dictionary<string, Question>();
         public override System.Threading.Tasks.Task OnConnected()
         {
             string name = this.Context.User.Identity.Name;
@@ -175,6 +176,30 @@ namespace CourseAider.Hubs
             };
         }
 
+        public void GetModes(string target)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            var modes = context
+                .ChatClient
+                .LocalUser
+                .GetChannelUsers()
+                .First()
+                .Channel
+                .Users
+                .Where(u => u.User.UserName == target)
+                .Select(u => u.Modes
+                    .Select(m => m.ToString())
+                    .Aggregate((a, b) => a.ToString() + "," + b.ToString()));
+
+            Clients.Caller.userModes(modes, target);
+        }
+
         public void Kick(string user)
         {
             if (!this.Context.User.Identity.IsAuthenticated) return;
@@ -198,10 +223,58 @@ namespace CourseAider.Hubs
             string name = this.Context.User.Identity.Name;
             var context = contexts[name];
 
-            var channel = context.ChatClient.LocalUser.GetChannelUsers().First().Channel;
+            var chanuser = context.ChatClient.LocalUser.GetChannelUsers().FirstOrDefault();
+            if (chanuser == null) return;
+            var channel = chanuser.Channel;
             var users = channel.Users.GetUsers();
          
             Clients.Caller.listUpdate(users.Select(u => u.NickName).Aggregate((a,b) => a + "," + b));
+        }
+
+        public void AskQuestion(string question, int points, int lifetime, string[] answers, int correct)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            string name = this.Context.User.Identity.Name;
+            var context = contexts[name];
+
+            if (!context.IsTeacher) return;
+
+            Question q = new Question(answers, lifetime, correct, points);
+            questions.Add(q.Id, q);
+            Clients.Others.askQuestion(question, points, answers, q.ExpirationTime);
+        }
+
+        public void AnswerQuestion(string questionId, int answer)
+        {
+            if (!this.Context.User.Identity.IsAuthenticated) return;
+
+            questions = questions.Where(q => q.Value.ExpirationTime > DateTime.Now).ToDictionary(a => a.Key, a => a.Value);
+            if(questions.ContainsKey(questionId))
+            {
+                var question = questions[questionId];
+                if(question.Answerers.Contains(this.Context.User.Identity.Name))
+                {
+                    return;
+                }
+                question.Answerers.Add(this.Context.User.Identity.Name);
+                if(answer == question.CorrectAnswer)
+                {
+                    using(var db = new CourseAiderContext())
+                    {
+                        var user = db.UserProfiles.FirstOrDefault(a => a.UserName == this.Context.User.Identity.Name);
+                        if (user == null) return;
+                        user.Score += question.Points;
+                        db.SaveChanges();
+                    }
+                    Clients.Caller.notify("You have answered correctly");
+                }
+                else
+                {
+                    Clients.Caller.notify("You have answered incorrectly , the correct answer was '"
+                        + question.Answers[question.CorrectAnswer] + "'.");
+                }
+            }
         }
 
         public void Send(string message)

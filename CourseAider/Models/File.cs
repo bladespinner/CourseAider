@@ -14,6 +14,8 @@ namespace CourseAider.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public DateTime UploadTime { get; set; }
+        public bool Visibility { get; set; }
+        public string Path { get; set; }
         public virtual Group Group { get; set; }
         public virtual UserProfile Uploader { get; set; }
     }
