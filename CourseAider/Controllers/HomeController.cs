@@ -23,5 +23,12 @@ namespace CourseAider.Controllers
             List<Course> courses = db.Courses.OrderByDescending(course => course.DateCreated).Take(4).ToList();
             return PartialView("_LatestCourses", courses);
         }
+
+        [ChildActionOnly]
+        public ActionResult TopUsers()
+        {
+            List<UserProfile> users = db.UserProfiles.OrderByDescending(user => user.Rating).Take(3).ToList();
+            return PartialView("_TopUsers", users);
+        }
     }
 }

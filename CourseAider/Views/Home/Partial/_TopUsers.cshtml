@@ -1,0 +1,30 @@
+﻿@model List<CourseAider.Models.UserProfile>
+
+<h2>Monthly Top Three</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Total Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <th>@user.Id</th>
+                <th>@user.Name</th>
+                <th>@user.Rating</th>
+            </tr>
+        }
+        @if (Request.IsAuthenticated)
+        {
+            <tr class="danger">
+                <th>User.Identity.Id</th>
+                <th>User.Identity.Name</th>
+                <th>User.Identity.Rating</th>
+            </tr>
+        }
+    </tbody>
+</table>
