@@ -51,41 +51,7 @@
         {
             using (Html.BeginColumn(6))
             {
-                <h2>Monthly Top Three</h2>
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Total Score</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th>1</th>
-                            <th>John Smith</th>
-                            <th>1096</th>
-                        </tr>
-                        <tr>
-                            <th>2</th>
-                            <th>Drake Peterson</th>
-                            <th>897</th>
-                        </tr>
-                        <tr>
-                            <th>3</th>
-                            <th>Flame Cannon</th>
-                            <th>677</th>
-                        </tr>
-                        @if (Request.IsAuthenticated)
-                        {
-                            <tr class="danger">
-                                <th>4</th>
-                                <th>> @User.Identity.Name</th>
-                                <th>128</th>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
+                @Html.Action("TopUsers", "Home")
             }
             using (Html.BeginColumn(6))
             {

@@ -142,17 +142,18 @@
                                                     <input type="submit" name="enroll" value="Enroll" 
                                                            data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
                                                            class="btn btn-primary requireConfirmation" />
-                                            
+
+                                                    <div class="display-label">
+                                                         @Html.DisplayNameFor(model => model.Image)
+                                                    </div>
+                                                    <div class="display-field">
+                                                        <img src="@Model.Image" class="pull-right" style="max-height:50px;max-width:70px" />
+                                                    </div>
+                                                    <div class="display-label">
+                                                        Course groups:
+                                                    </div>
                                                 }
                                             }
-                                            else
-                                            {
-                                                <p>You are enrolled for <b>@item.Name</b></p>
-                                            }
-                                        }
-                                        else
-                                        {
-                                            <p>You need to enroll for the <b>@Model.Name</b> course before you can enroll for <b>@item.Name</b></p>
                                         }
                                     </div>
                                 </td>
