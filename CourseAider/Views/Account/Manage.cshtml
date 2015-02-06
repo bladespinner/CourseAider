@@ -2,32 +2,75 @@
 @{
     ViewBag.Title = "Manage Account";
 }
-@Html.Action("UserCourses")
-@Html.Action("UserGroups")
-<hgroup class="title">
-    <h1>@ViewBag.Title</h1>
-</hgroup>
 
-<p class="message-success">@ViewBag.StatusMessage</p>
-
-<p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
-
-@if (ViewBag.HasLocalPassword)
-{
-    @Html.Partial("_ChangePasswordPartial")
-}
-else
-{ 
-    @Html.Partial("_SetPasswordPartial")
-}
-
-<section id="externalLogins">
-    @Html.Action("RemoveExternalLogins")
-
-    <h3>Add an external login</h3>
-    @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+<section class="ca-bg1">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                <h1>@ViewBag.Title</h1>
+                <p>You're logged in as <strong>@User.Identity.Name</strong>.</p>
+            }
+        }
+    }
 </section>
 
+<section class="ca-bg2">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(4))
+            {
+                <h2>Your Courses</h2>
+                @Html.Action("UserCourses")
+            }
+            using (Html.BeginColumn(4))
+            {
+                <h2>Your Groups</h2>
+                @Html.Action("UserGroups")
+            }
+            using (Html.BeginColumn(4))
+            {
+                <h2>Your Files</h2>
+                @Html.Action("UserFiles")
+            }
+        }
+    }
+</section>
+
+
+<section class="ca-bg4">
+    @using (Html.BeginContainer())
+    {
+        using (Html.BeginRow())
+        {
+            using (Html.BeginColumn(12))
+            {
+                if (ViewBag.HasLocalPassword)
+                {
+                    @Html.Partial("_ChangePasswordPartial")
+                }
+                else
+                { 
+                    @Html.Partial("_SetPasswordPartial")
+                }
+            }
+        }
+    }
+</section>
+
+
+@*
+    <section id="externalLogins">
+        @Html.Action("RemoveExternalLogins")
+
+        <h3>Add an external login</h3>
+        @Html.Action("ExternalLoginsList", new { ReturnUrl = ViewBag.ReturnUrl })
+    </section>
+*@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

@@ -1,0 +1,6 @@
+﻿@model List<CourseAider.Models.File>
+
+@foreach (var file in Model)
+{
+    <a href="@file.Path" class="btn btn-default">@file.Name</a>
+}

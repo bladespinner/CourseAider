@@ -1,1 +1,6 @@
-﻿
+﻿@model List<CourseAider.Models.Group>
+
+@foreach (var group in Model)
+{
+    <a href="/Group/Details/@group.Id" class="btn btn-default">@group.Name</a>
+}

@@ -4,6 +4,7 @@
     ViewBag.Title = "Details";
     CourseAider.Models.Group dummy = new CourseAider.Models.Group();
     var isCreator = Model.Creator.UserName == WebSecurity.CurrentUserName;
+    var isCourseMember = Model.Members.Any(member => member.UserName == WebSecurity.CurrentUserName);
     var isOnline = WebSecurity.CurrentUserName != null;
 }
 
@@ -134,13 +135,20 @@
                                         {
                                             <br />
                                             <br />
-                                            using (Html.BeginForm("Details", "Group", new { id = item.Id }, FormMethod.Post, null))
+                                            if (isCourseMember)
                                             {
-                                                @Html.AntiForgeryToken();
+                                                using (Html.BeginForm("Details", "Group", new { id = item.Id }, FormMethod.Post, null))
+                                                {
+                                                    @Html.AntiForgeryToken();
 
-                                                <input type="submit" name="enroll" value="Enroll" 
-                                                        data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
-                                                        class="btn btn-primary requireConfirmation" />
+                                                    <input type="submit" name="enroll" value="Enroll" 
+                                                            data-confirm-msg="You are going to enroll for a the @item.Name course, this cannot be undone, are you sure?" 
+                                                            class="btn btn-primary requireConfirmation" />
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <p>You need to enroll for <b>@Model.Name</b> before you can enroll for <b>@item.Name</b></p>
                                             }
                                         }
                                         else
