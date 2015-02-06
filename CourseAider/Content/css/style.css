@@ -233,3 +233,17 @@ figure.ca-testimonial span{
 .ca-wide-image {
     width:100%;
 }
+.ca-question{
+    width:100%;
+    margin:5px;
+    background:#edf1a0;
+}
+.ca-answer
+{
+    width:100%;
+    padding:5px;
+}
+.ca-answer input
+{
+    width:100%;
+}

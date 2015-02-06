@@ -1,5 +1,7 @@
 ﻿@model List<CourseAider.Models.UserProfile>
-
+@{
+    int counter = 0;
+}
 <h2>Monthly Top Three</h2>
 <table class="table table-striped">
     <thead>
@@ -12,12 +14,23 @@
     <tbody>
         @foreach (var user in Model)
         {
-            <tr>
-
-                <th>@user.UserId</th>
-                <th>@user.UserName</th>
-                <th>@user.Score</th>
-            </tr>
+            counter++;
+            if(user.UserName == WebSecurity.CurrentUserName)
+            {
+                <tr class="alert-info">
+                    <th>@counter</th>
+                    <th>>  @user.UserName</th>
+                    <th>@user.Score</th>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <th>@counter</th>
+                    <th>@user.UserName</th>
+                    <th>@user.Score</th>
+                </tr>
+            }
         }
     </tbody>
 </table>

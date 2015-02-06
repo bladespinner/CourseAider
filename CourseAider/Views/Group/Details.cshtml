@@ -67,9 +67,7 @@
                                 toggleChatInSilentMode();
                             });
 
-                            $('#addQuestion').click(function(){
-                                answerCreator.reset();
-                            });
+                            
 
                         </script>
                     </div><!-- /.navbar-collapse -->
@@ -258,12 +256,31 @@
             // Reference the auto-generated proxy for the hub.
             var chat = $.connection.chatHub;
             // Create a function that the hub can call back to display messages.
-            chat.client.askQuestion = function(id, question, points,answers , ExpirationTime){
+            chat.client.askQuestion = function(id, question, points, answers , ExpirationTime){
                 //$('#discussion').countdown({until: new Date() + 1, expiryFunc:function(){alert('time is up');}});
-                var questionContent = '<div>'+ 
-                                        '<stong>QUESTION('+ points +' points) '+ question + '</stong>' + 
+                var questionContent = '<div id=' + id + ' class="ca-question text-center">'+ 
+                                        '<stong><b>QUESTION:<i>('+ points +' points)</i></b> '+ question + '</stong>' + 
                                        '</div>';
                 $('#discussion').append(questionContent);
+
+                for(var i = 0 ; i < answers.length; i++){
+                    var answerId = 'answer_' + id + "_" + i;
+                    var answerText = '<div class="ca-answer">' + 
+                                        '<input class="ca-answer-checkbox btn btn-default" data-id="'+ i +'" id="' + answerId + '" type="button" value="' + answers[i] + '"/>'+
+                                     '</div>';
+                    $("#" + id).append(answerText);
+
+
+                    (function(j){
+                        $("#" + answerId).click(function(e){
+                            chat.server.answerQuestion(id,j)
+                            $("#" + id +  ' .ca-answer-checkbox' ).attr("disabled",true);
+                        });
+                    })(i);
+
+
+                }
+                
                 //var answerRow  = '<div style="margin-top:15px" id="answer_' + self.numberOfAnswers +  '">' + 
                   //                          '<input type="checkbox" class="answerCheckbox" data-pos='+ i + ' />'+
                     //                        '<input type="text" id="answerContent_'+ self.numberOfAnswers + '" disabled=true />'+
@@ -358,7 +375,10 @@
 
                                             
                     });
-                                        
+                    $('#addQuestion').click(function(){
+                        answerCreator.reset();
+                    });
+                
                     $('#createAnswer').click(function(){
                         answerCreator.addAnswer();
                     });

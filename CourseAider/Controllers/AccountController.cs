@@ -347,7 +347,7 @@ namespace CourseAider.Controllers
         {
             using(CourseAiderContext context = new CourseAiderContext())
             {
-                var courses = context.Courses.Where(c => c.Creator.UserName == WebSecurity.CurrentUserName);
+                var courses = context.Courses.Where(c => c.Members.Any(a => a.UserName == WebSecurity.CurrentUserName));
                 return PartialView("_UserCourses", courses.ToList());
             }
         }
@@ -357,7 +357,7 @@ namespace CourseAider.Controllers
         {
             using (CourseAiderContext context = new CourseAiderContext())
             {
-                var groups = context.Groups.Where(c => c.Creator.UserName == WebSecurity.CurrentUserName);
+                var groups = context.Groups.Where(c => c.Members.Any(a => a.UserName == WebSecurity.CurrentUserName));
                 return PartialView("_UserGroups", groups.ToList());
             }
         }

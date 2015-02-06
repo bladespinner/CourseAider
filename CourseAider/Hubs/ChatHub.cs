@@ -261,7 +261,8 @@ namespace CourseAider.Hubs
 
             Question q = new Question(answers, lifetime, correct, points);
             questions.Add(q.Id, q);
-            Clients.Others.askQuestion(question, points, answers, q.ExpirationTime);
+            Clients.Caller.notify("You have succesfuly submited a question!");
+            Clients.Others.askQuestion(q.Id, question, points, answers, q.ExpirationTime);
         }
 
         public void AnswerQuestion(string questionId, int answer)

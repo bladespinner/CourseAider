@@ -35,7 +35,7 @@ namespace CourseAider.Controllers
             if(WebSecurity.IsAuthenticated)
             {
                 var u = db.UserProfiles.FirstOrDefault(user => user.UserName == WebSecurity.CurrentUserName);
-                if (u != null)
+                if (u != null && !courses.Contains(u))
                 {
                     courses.Add(u);
                 }
