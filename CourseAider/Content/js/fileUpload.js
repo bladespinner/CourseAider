@@ -1,5 +1,16 @@
 ﻿$(document).ready(function () {
     $("#btnUpload").click(OnUpload);
+    $(".fileRate").click(function (e) {
+        $this = $(this);
+        $.ajax({
+            type: "POST",
+            url: "/api/FileRating/" + $(this).attr("data-file-id"),
+            success: function () {
+                $this.next().show();
+                $this.hide();
+            }
+        })
+    });
 });
 
 function ShowUploadControls() {
@@ -59,8 +70,4 @@ function OnUpload(evt) {
             alert("Your browser doesn't support HTML5 multiple file uploads! Please use some decent browser.");
         }
     }
-}
-
-function refreshFiles() {
-
 }

@@ -342,13 +342,34 @@ namespace CourseAider.Controllers
             return PartialView("_RemoveExternalLoginsPartial", externalLogins);
         }
 
+        [ChildActionOnly]
         public ActionResult UserCourses()
         {
-            return PartialView("_UserCourser");
+            using(CourseAiderContext context = new CourseAiderContext())
+            {
+                var courses = context.Courses.Where(c => c.Creator.UserName == WebSecurity.CurrentUserName);
+                return PartialView("_UserCourses", courses.ToList());
+            }
         }
+
+        [ChildActionOnly]
         public ActionResult UserGroups()
         {
-            return PartialView("_UserCourser");
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var groups = context.Groups.Where(c => c.Creator.UserName == WebSecurity.CurrentUserName);
+                return PartialView("_UserGroups", groups.ToList());
+            }
+        }
+
+        [ChildActionOnly]
+        public ActionResult UserFiles()
+        {
+            using (CourseAiderContext context = new CourseAiderContext())
+            {
+                var files = context.Files.Where(c => c.Uploader.UserName == WebSecurity.CurrentUserName);
+                return PartialView("_UserFiles", files.ToList());
+            }
         }
 
         #region Helpers

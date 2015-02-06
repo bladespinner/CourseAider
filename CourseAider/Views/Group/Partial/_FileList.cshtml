@@ -2,17 +2,26 @@
 
 @foreach (var file in Model)
 {
-    if (ViewBag.isTeacher || file.Visibility)
+    if (ViewBag.isTeacher || file.Visibility || file.Uploader.UserName == WebSecurity.CurrentUserName)
     {
         <tr>
-            <td>@file.Name</td>
+            <td>
+                @file.Name 
+                @if (file.Score == 0 && ViewBag.isTeacher)
+                {
+                    <a class="btn btn-info btn-sm fileRate" data-file-id="@file.Id">Give Point</a>
+                    <p style="display:none">You've given <b>@file.Uploader.UserName a point!</b></p>
+                }
+            </td>
             @if(file.Uploader.UserName == WebSecurity.CurrentUserName)
             {
                 <td><i>You</i></td>
             }
             else
             {
-                <td>@file.Uploader.UserName</td>
+                <td>
+                    @file.Uploader.UserName
+                </td>
             }
         
             @if (file.Visibility)

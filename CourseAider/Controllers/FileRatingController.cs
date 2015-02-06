@@ -20,7 +20,7 @@ namespace CourseAider.Controllers
                 var file = a.Files.Find(id);
                 if (file != null)
                 {
-                    if (file.Uploader.Score == 0)
+                    if (file.Score == 0)
                     {
                         file.Score += 1;
                         file.Uploader.Score += 1;
